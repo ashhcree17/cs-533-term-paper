@@ -1,4 +1,4 @@
-package movies.spring.data.neo4j.domain;
+package abac.spring.data.neo4j.domain;
 
 import java.util.ArrayList;
 import java.util.List;

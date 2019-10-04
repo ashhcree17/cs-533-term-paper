@@ -1,8 +1,8 @@
-package movies.spring.data.neo4j.repositories;
+package abac.spring.data.neo4j.repositories;
 
-import movies.spring.data.neo4j.domain.Object;
-import movies.spring.data.neo4j.domain.User;
-import movies.spring.data.neo4j.domain.Role;
+import abac.spring.data.neo4j.domain.Object;
+import abac.spring.data.neo4j.domain.Role;
+import abac.spring.data.neo4j.domain.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,58 +26,58 @@ import static org.junit.Assert.assertNotNull;
 public class UsersRepositoryTest {
 
 	@Autowired
-	private MovieRepository movieRepository;
+	private ObjectRepository objectRepository;
 
 	@Autowired
-	private PersonRepository personRepository;
+	private UserRepository userRepository;
 
 	@Before
 	public void setUp() {
 		Object matrix = new Object("The Matrix", 1999, "Welcome to the Real World");
 
-		movieRepository.save(matrix);
+		objectRepository.save(matrix);
 
 		User keanu = new User("Keanu Reeves", 1964);
 
-		personRepository.save(keanu);
+		userRepository.save(keanu);
 
 		Role neo = new Role(matrix, keanu);
 		neo.addRoleName("Neo");
 
 		matrix.addRole(neo);
 
-		movieRepository.save(matrix);
+		objectRepository.save(matrix);
 	}
 
 	/**
-	 * Test of findByTitle method, of class MovieRepository.
+	 * Test of findByTitle method, of class ObjectRepository.
 	 */
 	@Test
 	public void testFindByTitle() {
 
 		String title = "The Matrix";
-		Object result = movieRepository.findByTitle(title);
+		Object result = objectRepository.findByTitle(title);
 		assertNotNull(result);
 		assertEquals(1999, result.getReleased());
 	}
 
 	/**
-	 * Test of findByTitleContaining method, of class MovieRepository.
+	 * Test of findByTitleContaining method, of class ObjectRepository.
 	 */
 	@Test
 	public void testFindByTitleContaining() {
 		String title = "*Matrix*";
-		Collection<Object> result = movieRepository.findByTitleLike(title);
+		Collection<Object> result = objectRepository.findByTitleLike(title);
 		assertNotNull(result);
 		assertEquals(1, result.size());
 	}
 
 	/**
-	 * Test of graph method, of class MovieRepository.
+	 * Test of graph method, of class ObjectRepository.
 	 */
 	@Test
 	public void testGraph() {
-		Collection<Object> graph = movieRepository.graph(5);
+		Collection<Object> graph = objectRepository.graph(5);
 
 		assertEquals(1, graph.size());
 

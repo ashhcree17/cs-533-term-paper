@@ -1,23 +1,23 @@
-package movies.spring.data.neo4j.services;
+package abac.spring.data.neo4j.services;
 
 import java.util.*;
 
-import movies.spring.data.neo4j.domain.Object;
-import movies.spring.data.neo4j.domain.Role;
-import movies.spring.data.neo4j.repositories.MovieRepository;
+import abac.spring.data.neo4j.repositories.ObjectRepository;
+import abac.spring.data.neo4j.domain.Object;
+import abac.spring.data.neo4j.domain.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class MovieService {
+public class ObjectService {
 
-    private final static Logger LOG = LoggerFactory.getLogger(MovieService.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ObjectService.class);
 
-	private final MovieRepository movieRepository;
-	public MovieService(MovieRepository movieRepository) {
-		this.movieRepository = movieRepository;
+	private final ObjectRepository objectRepository;
+	public ObjectService(ObjectRepository objectRepository) {
+		this.objectRepository = objectRepository;
 	}
 
 	private Map<String, java.lang.Object> toD3Format(Collection<Object> objects) {
@@ -52,19 +52,19 @@ public class MovieService {
 
     @Transactional(readOnly = true)
     public Object findByTitle(String title) {
-        Object result = movieRepository.findByTitle(title);
+        Object result = objectRepository.findByTitle(title);
         return result;
     }
 
     @Transactional(readOnly = true)
     public Collection<Object> findByTitleLike(String title) {
-        Collection<Object> result = movieRepository.findByTitleLike(title);
+        Collection<Object> result = objectRepository.findByTitleLike(title);
         return result;
     }
 
 	@Transactional(readOnly = true)
 	public Map<String, java.lang.Object>  graph(int limit) {
-		Collection<Object> result = movieRepository.graph(limit);
+		Collection<Object> result = objectRepository.graph(limit);
 		return toD3Format(result);
 	}
 }
