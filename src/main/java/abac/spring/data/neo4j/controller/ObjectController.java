@@ -2,7 +2,6 @@ package abac.spring.data.neo4j.controller;
 
 import java.util.Map;
 
-import abac.spring.data.neo4j.domain.ObjectNode;
 import abac.spring.data.neo4j.services.IndexingService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +19,12 @@ public class ObjectController {
 	}
 
     @GetMapping("/graph")
-	public Map<String, ObjectNode> graph(@RequestParam(value = "limit",required = false) Integer limit) {
+	public Map<String, Object> graph(@RequestParam(value = "limit",required = false) Integer limit) {
 		return indexingService.graph(limit == null ? 100 : limit);
 	}
 
     @GetMapping("/index")
-	public Map<String, ObjectNode> index(@RequestParam(value = "limit",required = false) Integer limit) {
+	public Map<String, Object> index(@RequestParam(value = "limit",required = false) Integer limit) {
 		return indexingService.graph(limit == null ? 100 : limit);
 	}
 }

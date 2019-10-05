@@ -71,10 +71,9 @@ public class IndexingService {
 		return toD3Format(result);
 	}
 
-	// todo update this to have indexing algorithm
 	@Transactional(readOnly = true)
 	public void index(int limit) {
-		Collection<ObjectNode> result = objectRepository.graph(limit);
+		Collection<ObjectNode> result = objectRepository.index(limit);
 		toD3Format(result);
 	}
 }
