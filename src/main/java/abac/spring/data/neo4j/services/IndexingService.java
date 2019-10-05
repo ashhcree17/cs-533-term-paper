@@ -34,7 +34,7 @@ public class IndexingService {
 			int target = i;
 			i++;
 			for (ObjectAttribute objectAttribute : objectNode.getObjectAttributes()) {
-				Map<String, java.lang.Object> objectAttr = map("type", objectAttribute.getType(), "label", "objectAttribute");
+				Map<String, Object> objectAttr = map("type", objectAttribute.getType(), "label", "objectAttribute");
 				int source = nodes.indexOf(objectAttr);
 				if (source == -1) {
 					nodes.add(objectAttr);
@@ -46,8 +46,8 @@ public class IndexingService {
 		return map("nodes", nodes, "links", rels);
 	}
 
-	private Map<String, java.lang.Object> map(String key1, java.lang.Object value1, String key2, java.lang.Object value2) {
-		Map<String, java.lang.Object> result = new HashMap<String, java.lang.Object>(2);
+	private Map<String, Object> map(String key1, Object value1, String key2, Object value2) {
+		Map<String, Object> result = new HashMap<String, Object>(2);
 		result.put(key1, value1);
 		result.put(key2, value2);
 		return result;
@@ -66,7 +66,7 @@ public class IndexingService {
     }
 
 	@Transactional(readOnly = true)
-	public Map<String, java.lang.Object>  graph(int limit) {
+	public Map<String, Object> graph(int limit) {
 		Collection<ObjectNode> result = objectRepository.graph(limit);
 		return toD3Format(result);
 	}
