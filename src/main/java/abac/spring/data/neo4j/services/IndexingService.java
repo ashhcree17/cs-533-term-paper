@@ -3,6 +3,7 @@ package abac.spring.data.neo4j.services;
 import abac.spring.data.neo4j.domain.Object;
 import abac.spring.data.neo4j.domain.ObjectAttribute;
 import abac.spring.data.neo4j.repositories.ObjectRepository;
+import abac.spring.data.neo4j.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,13 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
-public class ObjectService {
-
-    private final static Logger LOG = LoggerFactory.getLogger(ObjectService.class);
+public class IndexingService {
+    private final static Logger LOG = LoggerFactory.getLogger(IndexingService.class);
 
 	private final ObjectRepository objectRepository;
-	public ObjectService(ObjectRepository objectRepository) {
+	private final UserRepository userRepository;
+
+	public IndexingService(ObjectRepository objectRepository, UserRepository userRepository) {
 		this.objectRepository = objectRepository;
+		this.userRepository = userRepository;
 	}
 
 	private Map<String, java.lang.Object> toD3Format(Collection<Object> objects) {
@@ -58,7 +61,8 @@ public class ObjectService {
 
     @Transactional(readOnly = true)
     public Collection<Object> findByTypeLike(String type) {
-        return objectRepository.findByTypeLike(type);
+//        return objectRepository.findByTypeLike(type);
+		return null;
     }
 
 	@Transactional(readOnly = true)
@@ -67,10 +71,10 @@ public class ObjectService {
 		return toD3Format(result);
 	}
 
-	// todo update this
+	// todo update this to have indexing algorithm
 	@Transactional(readOnly = true)
-	public Map<String, java.lang.Object>  index(int limit) {
+	public void index(int limit) {
 		Collection<Object> result = objectRepository.graph(limit);
-		return toD3Format(result);
+		toD3Format(result);
 	}
 }
