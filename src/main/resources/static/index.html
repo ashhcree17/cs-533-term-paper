@@ -2,7 +2,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/css/main.css">
-    <title>Neo4j Users and Objects</title>
+    <title>Neo4j Attribute-Based Access Control</title>
 </head>
 
 <body>
@@ -16,7 +16,7 @@
                     <li>
                         <form role="search" class="navbar-form" id="search">
                             <div class="form-group">
-                                <input type="text" value="Matrix" placeholder="Search for Movie Title" class="form-control" name="search">
+                                <input type="text" value="" placeholder="Search for Object Attribute" class="form-control" name="search">
                             </div>
                             <button class="btn btn-default" type="submit">Search</button>
                         </form>
@@ -30,7 +30,7 @@
                     </a>
                 </div>
                 <div class="navbar-brand">
-                    <div class="brand">Neo4j Movies</div>
+                    <div class="brand">Neo4j Attribute-Based Access Control</div>
                 </div>
             </div>
         </div>
@@ -44,9 +44,8 @@
             <table id="results" class="table table-striped table-hover">
                 <thead>
                 <tr>
-                    <th>Movie</th>
-                    <th>Released</th>
-                    <th>Tagline</th>
+                    <th>ID</th>
+                    <th>Type</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,26 +53,14 @@
             </table>
         </div>
     </div>
-    <div class="col-md-7">
-        <div class="panel panel-default">
-            <div class="panel-heading" id="title">Details</div>
-            <div class="row">
-                <div class="col-sm-4 col-md-4">
-                    <img src="" class="well" id="poster"/>
-                </div>
-                <div class="col-md-8 col-sm-8">
-                    <h4>Crew</h4>
-                    <ul id="crew">
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <style type="text/css">
     .node { stroke: #222; stroke-width: 1.5px; }
-    .node.actor { fill: #888; }
-    .node.object { fill: #BBB; }
+    .node.accessRight { fill: #888; }
+    .node.objectAttribute { fill: #BBB; }
+    .node.objectNode { fill: #1E90FF; }
+    .node.role { fill: #BA55D3; }
+    .node.user { fill: #8FBC8F; }
     .link { stroke: #999; stroke-opacity: .6; stroke-width: 1px; }
 </style>
 
@@ -87,7 +74,7 @@
             .attr("width", "100%").attr("height", "100%")
             .attr("pointer-events", "all");
 
-    // todo check out making this into the indexing function
+    // This will display the nodes in a graph
     d3.json("/graph", function(error, graph) {
         if (error) return;
 
@@ -106,7 +93,7 @@
 
         // html title attribute
         node.append("title")
-                .text(function (d) { return d.title; })
+                .text(function (d) { return d.title; });
 
         // force feed algo ticks
         force.on("tick", function() {

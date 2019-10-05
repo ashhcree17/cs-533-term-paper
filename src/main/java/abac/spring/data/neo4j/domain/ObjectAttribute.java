@@ -14,8 +14,6 @@ public class ObjectAttribute {
     @GeneratedValue
     private Long id;
     private String type;
-    private String patientId;
-    private String date;
 
     @Relationship(type = "ASSOC", direction = Relationship.INCOMING)
     private List<AccessRight> accessRights;
@@ -29,14 +27,6 @@ public class ObjectAttribute {
 
     public String getType() {
         return type;
-    }
-
-    public String getPatientId() {
-        return patientId;
-    }
-
-    public String getDate() {
-        return date;
     }
 
     public List<AccessRight> getAccessRights() {

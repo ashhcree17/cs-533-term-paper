@@ -1,7 +1,7 @@
 package abac.spring.data.neo4j.services;
 
-import abac.spring.data.neo4j.domain.ObjectNode;
 import abac.spring.data.neo4j.domain.ObjectAttribute;
+import abac.spring.data.neo4j.domain.ObjectNode;
 import abac.spring.data.neo4j.repositories.ObjectRepository;
 import abac.spring.data.neo4j.repositories.UserRepository;
 import org.slf4j.Logger;

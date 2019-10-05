@@ -1,12 +1,12 @@
 package abac.spring.data.neo4j.controller;
 
-import java.util.Map;
-
 import abac.spring.data.neo4j.services.IndexingService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/")

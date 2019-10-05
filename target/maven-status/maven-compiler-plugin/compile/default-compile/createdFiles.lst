@@ -1,0 +1,11 @@
+abac/spring/data/neo4j/domain/User.class
+abac/spring/data/neo4j/repositories/AccessRightRepository.class
+abac/spring/data/neo4j/domain/ObjectNode.class
+abac/spring/data/neo4j/services/IndexingService.class
+abac/spring/data/neo4j/repositories/RoleRepository.class
+abac/spring/data/neo4j/repositories/UserRepository.class
+abac/spring/data/neo4j/repositories/ObjectAttributeRepository.class
+abac/spring/data/neo4j/ABACApplication.class
+abac/spring/data/neo4j/domain/Role.class
+abac/spring/data/neo4j/controller/ObjectController.class
+abac/spring/data/neo4j/repositories/ObjectRepository.class

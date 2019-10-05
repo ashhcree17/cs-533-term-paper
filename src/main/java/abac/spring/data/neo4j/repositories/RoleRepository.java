@@ -1,7 +1,6 @@
 package abac.spring.data.neo4j.repositories;
 
 import abac.spring.data.neo4j.domain.Role;
-import abac.spring.data.neo4j.domain.User;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 
 public interface RoleRepository extends Neo4jRepository<Role, Long> {
