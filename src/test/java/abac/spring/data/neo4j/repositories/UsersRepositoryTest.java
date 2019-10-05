@@ -23,7 +23,7 @@ public class UsersRepositoryTest {
 
 //	@Before
 //	public void setUp() {
-//		Object matrix = new Object("The Matrix", 1999, "Welcome to the Real World");
+//		ObjectNode matrix = new ObjectNode("The Matrix", 1999, "Welcome to the Real World");
 //
 //		objectRepository.save(matrix);
 //
@@ -46,7 +46,7 @@ public class UsersRepositoryTest {
 //	public void testFindByTitle() {
 //
 //		String title = "The Matrix";
-//		Object result = objectRepository.findByTitle(title);
+//		ObjectNode result = objectRepository.findByTitle(title);
 //		assertNotNull(result);
 //		assertEquals(1999, result.getReleased());
 //	}
@@ -57,7 +57,7 @@ public class UsersRepositoryTest {
 //	@Test
 //	public void testFindByTitleContaining() {
 //		String title = "*Matrix*";
-//		Collection<Object> result = objectRepository.findByTitleLike(title);
+//		Collection<ObjectNode> result = objectRepository.findByTitleLike(title);
 //		assertNotNull(result);
 //		assertEquals(1, result.size());
 //	}
@@ -67,11 +67,11 @@ public class UsersRepositoryTest {
 //	 */
 //	@Test
 //	public void testGraph() {
-//		Collection<Object> graph = objectRepository.graph(5);
+//		Collection<ObjectNode> graph = objectRepository.graph(5);
 //
 //		assertEquals(1, graph.size());
 //
-//		Object object = graph.iterator().next();
+//		ObjectNode object = graph.iterator().next();
 //
 //		assertEquals(1, object.getObjectAttributes().size());
 //

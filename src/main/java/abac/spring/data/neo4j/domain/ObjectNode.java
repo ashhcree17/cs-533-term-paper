@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NodeEntity
-public class Object {
+public class ObjectNode {
 
 	@Id
 	@GeneratedValue
@@ -20,7 +20,7 @@ public class Object {
 	@Relationship(type = "ASSIGN", direction = Relationship.OUTGOING)
 	private List<ObjectAttribute> objectAttributes;
 
-	public Object() {}
+	public ObjectNode() {}
 
 	public Long getId() {
 		return id;

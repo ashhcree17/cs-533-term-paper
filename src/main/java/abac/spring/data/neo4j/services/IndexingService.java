@@ -1,6 +1,6 @@
 package abac.spring.data.neo4j.services;
 
-import abac.spring.data.neo4j.domain.Object;
+import abac.spring.data.neo4j.domain.ObjectNode;
 import abac.spring.data.neo4j.domain.ObjectAttribute;
 import abac.spring.data.neo4j.repositories.ObjectRepository;
 import abac.spring.data.neo4j.repositories.UserRepository;
@@ -23,18 +23,18 @@ public class IndexingService {
 		this.userRepository = userRepository;
 	}
 
-	private Map<String, java.lang.Object> toD3Format(Collection<Object> objects) {
-		List<Map<String, java.lang.Object>> nodes = new ArrayList<>();
-		List<Map<String, java.lang.Object>> rels = new ArrayList<>();
+	private Map<String, Object> toD3Format(Collection<ObjectNode> objectNodes) {
+		List<Map<String, Object>> nodes = new ArrayList<>();
+		List<Map<String, Object>> rels = new ArrayList<>();
 		int i = 0;
-		Iterator<Object> result = objects.iterator();
+		Iterator<ObjectNode> result = objectNodes.iterator();
 		while (result.hasNext()) {
-			Object object = result.next();
-			nodes.add(map("type", object.getObjectAttributes().get(0), "label", "object"));
+			ObjectNode objectNode = result.next();
+			nodes.add(map("id", objectNode.getId(), "label", "objectNode"));
 			int target = i;
 			i++;
-			for (ObjectAttribute objectAttribute : object.getObjectAttributes()) {
-				Map<String, java.lang.Object> objectAttr = map("id", objectAttribute.getId(), "label", "objectAttribute");
+			for (ObjectAttribute objectAttribute : objectNode.getObjectAttributes()) {
+				Map<String, java.lang.Object> objectAttr = map("type", objectAttribute.getType(), "label", "objectAttribute");
 				int source = nodes.indexOf(objectAttr);
 				if (source == -1) {
 					nodes.add(objectAttr);
@@ -54,27 +54,27 @@ public class IndexingService {
 	}
 
     @Transactional(readOnly = true)
-    public Object findByType(String type) {
+    public ObjectNode findByType(String type) {
 //        return objectRepository.findByType(type);
 		return null;
     }
 
     @Transactional(readOnly = true)
-    public Collection<Object> findByTypeLike(String type) {
+    public Collection<ObjectNode> findByTypeLike(String type) {
 //        return objectRepository.findByTypeLike(type);
 		return null;
     }
 
 	@Transactional(readOnly = true)
 	public Map<String, java.lang.Object>  graph(int limit) {
-		Collection<Object> result = objectRepository.graph(limit);
+		Collection<ObjectNode> result = objectRepository.graph(limit);
 		return toD3Format(result);
 	}
 
 	// todo update this to have indexing algorithm
 	@Transactional(readOnly = true)
 	public void index(int limit) {
-		Collection<Object> result = objectRepository.graph(limit);
+		Collection<ObjectNode> result = objectRepository.graph(limit);
 		toD3Format(result);
 	}
 }
