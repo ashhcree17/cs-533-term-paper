@@ -1,13 +1,12 @@
 package abac.spring.data.neo4j.domain;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+
+import java.util.List;
 
 @NodeEntity
 public class User {
@@ -16,8 +15,9 @@ public class User {
     @GeneratedValue
 	private Long id;
 
-	@Relationship(type = "ACTED_IN")
-	private List<Object> roles = new ArrayList<>();
+	@JsonIgnoreProperties("object")
+	@Relationship(type = "ASSIGNED", direction = Relationship.OUTGOING)
+	private List<Role> roles;
 
 	public User() {}
 
@@ -25,7 +25,7 @@ public class User {
 		return id;
 	}
 
-	public List<Object> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
 }

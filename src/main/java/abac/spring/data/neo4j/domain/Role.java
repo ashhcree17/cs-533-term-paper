@@ -1,52 +1,48 @@
 package abac.spring.data.neo4j.domain;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.neo4j.ogm.annotation.GeneratedValue;
+import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
+
 import java.util.List;
 
-import org.neo4j.ogm.annotation.*;
-
-@RelationshipEntity(type = "ASSIGN")
+@NodeEntity
 public class Role {
 
     @Id
     @GeneratedValue
 	private Long id;
-	private List<String> roles = new ArrayList<>();
+    private String type;
 
-	@StartNode
-	private User user;
+	@JsonIgnoreProperties("role")
+	@Relationship(type = "ASSIGN", direction = Relationship.INCOMING)
+	private List<User> users;
 
-	@EndNode
-	private Object object;
+	@JsonIgnoreProperties("role")
+	@Relationship(type = "ASSOC", direction = Relationship.OUTGOING)
+	private List<AccessRight> accessRights;
 
-	public Role() {
-	}
-
-	public Role(Object object, User actor) {
-		this.object = object;
-		this.user = actor;
-	}
+	public Role() {}
 
 	public Long getId() {
-	    return id;
+		return id;
 	}
 
-	public List<String> getRoles() {
-	    return roles;
+	public String getType() {
+		return type;
 	}
 
-	public User getUser() {
-	    return user;
+	public List<User> getUsers() {
+		return users;
 	}
 
-	public Object getObject() {
-	    return object;
+	public List<AccessRight> getAccessRights() {
+		return accessRights;
 	}
 
-    public void addRoleName(String name) {
-        if (this.roles == null) {
-            this.roles = new ArrayList<>();
-        }
-        this.roles.add(name);
-    }
+	public void addRoleType(String type) {
+		this.type = type;
+	}
 }

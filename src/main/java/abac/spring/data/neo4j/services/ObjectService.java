@@ -1,14 +1,14 @@
 package abac.spring.data.neo4j.services;
 
-import java.util.*;
-
-import abac.spring.data.neo4j.repositories.ObjectRepository;
 import abac.spring.data.neo4j.domain.Object;
-import abac.spring.data.neo4j.domain.Role;
+import abac.spring.data.neo4j.domain.ObjectAttribute;
+import abac.spring.data.neo4j.repositories.ObjectRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @Service
 public class ObjectService {
@@ -27,14 +27,14 @@ public class ObjectService {
 		Iterator<Object> result = objects.iterator();
 		while (result.hasNext()) {
 			Object object = result.next();
-			nodes.add(map("title", object.getTitle(), "label", "object"));
+			nodes.add(map("type", object.getObjectAttributes().get(0), "label", "object"));
 			int target = i;
 			i++;
-			for (Role role : object.getRoles()) {
-				Map<String, java.lang.Object> actor = map("title", role.getUser().getName(), "label", "actor");
-				int source = nodes.indexOf(actor);
+			for (ObjectAttribute objectAttribute : object.getObjectAttributes()) {
+				Map<String, java.lang.Object> objectAttr = map("id", objectAttribute.getId(), "label", "objectAttribute");
+				int source = nodes.indexOf(objectAttr);
 				if (source == -1) {
-					nodes.add(actor);
+					nodes.add(objectAttr);
 					source = i++;
 				}
 				rels.add(map("source", source, "target", target));
@@ -51,19 +51,25 @@ public class ObjectService {
 	}
 
     @Transactional(readOnly = true)
-    public Object findByTitle(String title) {
-        Object result = objectRepository.findByTitle(title);
-        return result;
+    public Object findByType(String type) {
+//        return objectRepository.findByType(type);
+		return null;
     }
 
     @Transactional(readOnly = true)
-    public Collection<Object> findByTitleLike(String title) {
-        Collection<Object> result = objectRepository.findByTitleLike(title);
-        return result;
+    public Collection<Object> findByTypeLike(String type) {
+        return objectRepository.findByTypeLike(type);
     }
 
 	@Transactional(readOnly = true)
 	public Map<String, java.lang.Object>  graph(int limit) {
+		Collection<Object> result = objectRepository.graph(limit);
+		return toD3Format(result);
+	}
+
+	// todo update this
+	@Transactional(readOnly = true)
+	public Map<String, java.lang.Object>  index(int limit) {
 		Collection<Object> result = objectRepository.graph(limit);
 		return toD3Format(result);
 	}
