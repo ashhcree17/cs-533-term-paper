@@ -10,12 +10,6 @@ import java.util.Collection;
 
 @RepositoryRestResource(collectionResourceRel = "objects", path = "objects")
 public interface ObjectRepository extends Neo4jRepository<Object, Long> {
-
-	// todo put in objectattribute repository
-//	Object findByType(@Param("type") String type);
-
-	Collection<Object> findByTypeLike(@Param("type") String type);
-
     @Query("MATCH (m:Object)<-[r:ACTED_IN]-(a:User) RETURN m,r,a LIMIT {limit}")
 	Collection<Object> graph(@Param("limit") int limit);
 
