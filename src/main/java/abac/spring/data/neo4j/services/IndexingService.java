@@ -16,13 +16,7 @@ import static java.util.Collections.emptyList;
 public class IndexingService {
     private final static Logger LOG = LoggerFactory.getLogger(IndexingService.class);
 
-	private final ObjectRepository objectRepository;
-	private final UserRepository userRepository;
-
-	public IndexingService(ObjectRepository objectRepository, UserRepository userRepository) {
-		this.objectRepository = objectRepository;
-		this.userRepository = userRepository;
-	}
+	public IndexingService() {}
 
 	public void index(
 			List<User> users,
@@ -80,7 +74,5 @@ public class IndexingService {
 
 			}
 		}
-
-
 	}
 }

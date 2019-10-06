@@ -1,5 +1,6 @@
 abac/spring/data/neo4j/domain/UserAttribute.class
 abac/spring/data/neo4j/domain/User.class
+abac/spring/data/neo4j/domain/SourceNode.class
 abac/spring/data/neo4j/repositories/AccessRightRepository.class
 abac/spring/data/neo4j/domain/ObjectNode.class
 abac/spring/data/neo4j/services/IndexingService.class

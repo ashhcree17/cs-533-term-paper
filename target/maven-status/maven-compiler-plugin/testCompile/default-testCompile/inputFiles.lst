@@ -1,1 +1,2 @@
-/Users/ashton/workspace/cs-533-term-paper/src/test/java/abac/spring/data/neo4j/repositories/UsersRepositoryTest.java
+/Users/ashton/workspace/cs-533-term-paper/src/test/java/abac/spring/data/neo4j/repositories/ObjectRepositoryTest.java
+/Users/ashton/workspace/cs-533-term-paper/src/test/java/abac/spring/data/neo4j/services/IndexingServiceTest.java
