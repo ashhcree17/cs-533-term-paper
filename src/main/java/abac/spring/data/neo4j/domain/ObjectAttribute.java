@@ -21,6 +21,12 @@ public class ObjectAttribute {
     @Relationship(type = "ASSIGN", direction = Relationship.INCOMING)
     private List<ObjectNode> objectNodes;
 
+    public ObjectAttribute() {}
+
+    public ObjectAttribute(String type) {
+        this.type = type;
+    }
+
     public Long getId() {
         return id;
     }

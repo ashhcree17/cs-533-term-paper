@@ -12,8 +12,8 @@ import java.util.Collection;
 public interface ObjectRepository extends Neo4jRepository<ObjectNode, Long> {
     @Query("MATCH (m:ObjectNode)<-[r:ACTED_IN]-(a:User) RETURN m,r,a LIMIT {limit}")
 	Collection<ObjectNode> graph(@Param("limit") int limit);
-
-    //todo update this
-    @Query("MATCH (m:ObjectNode)<-[r:ACTED_IN]-(a:User) RETURN m,r,a LIMIT {limit}")
-	Collection<ObjectNode> index(@Param("limit") int limit);
+//
+//    //todo update this
+//    @Query("MATCH (m:ObjectNode)<-[r:ACTED_IN]-(a:User) RETURN m,r,a LIMIT {limit}")
+//	Collection<ObjectNode> index(@Param("limit") int limit);
 }

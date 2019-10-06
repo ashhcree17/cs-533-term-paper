@@ -1,43 +1,43 @@
 package abac.spring.data.neo4j.repositories;
 
+import abac.spring.data.neo4j.domain.ObjectAttribute;
+import abac.spring.data.neo4j.domain.ObjectNode;
+import abac.spring.data.neo4j.domain.Role;
+import abac.spring.data.neo4j.domain.User;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
-
-/**
- * @author pdtyreus
- */
+//import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Transactional
-public class UsersRepositoryTest {
+//@Transactional
+public class IndexingServiceTest {
 
 	@Autowired
 	private ObjectRepository objectRepository;
 
 	@Autowired
+	private ObjectAttributeRepository objAttrRepository;
+
+	@Autowired
 	private UserRepository userRepository;
 
-//	@Before
-//	public void setUp() {
-//		ObjectNode matrix = new ObjectNode("The Matrix", 1999, "Welcome to the Real World");
-//
-//		objectRepository.save(matrix);
-//
-//		User keanu = new User("Keanu Reeves", 1964);
-//
-//		userRepository.save(keanu);
-//
-//		Role neo = new Role(matrix, keanu);
-//		neo.addRoleType("Neo");
-//
-//		matrix.addObjectAttribute(neo);
-//
-//		objectRepository.save(matrix);
-//	}
+	@Before
+	public void setUp() {
+		ObjectNode o1 = new ObjectNode();
+		objectRepository.save(o1);
+
+		ObjectAttribute pulse = new ObjectAttribute("type:pulse");
+		objAttrRepository.save(pulse);
+
+		Role researcher = new Role("role:researcher");
+		o1.addObjectAttribute(pulse);
+
+		objectRepository.save(o1);
+	}
 //
 //	/**
 //	 * Test of findByTitle method, of class ObjectRepository.

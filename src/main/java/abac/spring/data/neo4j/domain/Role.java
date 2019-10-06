@@ -26,6 +26,10 @@ public class Role {
 
 	public Role() {}
 
+	public Role(String type) {
+		this.type = type;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -40,9 +44,5 @@ public class Role {
 
 	public List<AccessRight> getAccessRights() {
 		return accessRights;
-	}
-
-	public void addRoleType(String type) {
-		this.type = type;
 	}
 }
