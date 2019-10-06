@@ -20,7 +20,7 @@ The example project is described in detail on the https://neo4j.com/developer/ex
         a. Configure a username and password, if you haven't already.
     2) In Neo4j Desktop, click on your project, click on 'Manage' on the database you are using, click 'Open Browser'.
         a. Should not need to log in. Password was set up when you set up the database.
-. Run `:play objects` command, and click and run the Cypher statement to insert the dataset
+. Run the Cypher statement to insert the sample dataset
 . Clone this project from GitHub
 . Update `src/main/resources/application.properties` with the username and password you set above.
 . Run the project with `mvn spring-boot:run`.
