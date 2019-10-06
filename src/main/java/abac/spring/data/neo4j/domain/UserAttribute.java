@@ -1,6 +1,5 @@
 package abac.spring.data.neo4j.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -17,11 +16,9 @@ public class UserAttribute {
 	private Long id;
     private String type;
 
-	@JsonIgnoreProperties("role")
 	@Relationship(type = "ASSIGN", direction = Relationship.INCOMING)
 	private List<User> users;
 
-	@JsonIgnoreProperties("role")
 	@Relationship(type = "ASSOC", direction = Relationship.OUTGOING)
 	private List<AccessRight> accessRights;
 

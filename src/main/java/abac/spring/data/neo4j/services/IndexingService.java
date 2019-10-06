@@ -1,10 +1,16 @@
 package abac.spring.data.neo4j.services;
 
+import abac.spring.data.neo4j.domain.ObjectAttribute;
+import abac.spring.data.neo4j.domain.ObjectNode;
+import abac.spring.data.neo4j.domain.User;
+import abac.spring.data.neo4j.domain.UserAttribute;
 import abac.spring.data.neo4j.repositories.ObjectRepository;
 import abac.spring.data.neo4j.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class IndexingService {
@@ -18,16 +24,18 @@ public class IndexingService {
 		this.userRepository = userRepository;
 	}
 
-//	@Transactional(readOnly = true)
-	public void index(int limit) {
-//		Collection<ObjectNode> result = objectRepository.index(limit);
+	public void index(
+			List<User> users,
+			List<ObjectNode> objectNodes,
+			List<UserAttribute> userAttributes,
+			List<ObjectAttribute> objectAttributes
+	) {
+		// *** pseudo code of Algorithm 4 Indexing ***
 
-
-		// pseudo code
-
-		// input: graph of users, objects, operations
+		// input: users, objects, and operations
 		// output: set of permissions for each user node, i.e., u.permissions where u is a user
-		// output: set of permissions for each object node, i.e., o.permissions where o is an obj
+		// output: set of permissions for each object node, i.e., o.permissions where o is an object
+		// permission := an ASSOC from a user attribute to an object attribute (permission)
 
 
 		// for all users set u.permissions to an empty object --> {}

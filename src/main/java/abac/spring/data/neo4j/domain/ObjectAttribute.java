@@ -16,11 +16,11 @@ public class ObjectAttribute {
     private Long id;
     private String type;
 
-    @Relationship(type = "ASSOC", direction = Relationship.INCOMING)
-    private List<AccessRight> accessRights;
-
     @Relationship(type = "ASSIGN", direction = Relationship.INCOMING)
     private List<ObjectNode> objectNodes;
+
+    @Relationship(type = "ASSOC", direction = Relationship.INCOMING)
+    private List<AccessRight> accessRights;
 
     public ObjectAttribute() {}
 
@@ -36,12 +36,12 @@ public class ObjectAttribute {
         return type;
     }
 
-    public List<AccessRight> getAccessRights() {
-        return accessRights;
-    }
-
     public List<ObjectNode> getObjectNodes() {
         return objectNodes;
+    }
+
+    public List<AccessRight> getAccessRights() {
+        return accessRights;
     }
 
     public void addAccessRight(AccessRight accessRight) {

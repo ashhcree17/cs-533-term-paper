@@ -1,6 +1,7 @@
 package abac.spring.data.neo4j.repositories;
 
 import abac.spring.data.neo4j.domain.*;
+import abac.spring.data.neo4j.services.IndexingService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,12 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static java.util.Collections.singletonList;
-//import org.springframework.transaction.annotation.Transactional;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@Transactional
 public class IndexingServiceTest {
+
+	@Autowired
+	private IndexingService indexingService;
 
 	@Autowired
 	private ObjectRepository objectRepository;
@@ -35,9 +38,7 @@ public class IndexingServiceTest {
 	public void setUp() {
 		// set up nodes
 		ObjectAttribute pulse = new ObjectAttribute("type:pulse");
-
 		ObjectNode o1 = new ObjectNode();
-
 		AccessRight read = new AccessRight("read");
 		UserAttribute researcher = new UserAttribute("role:researcher");
 		User u1 = new User(singletonList(researcher));
@@ -68,11 +69,25 @@ public class IndexingServiceTest {
 	 */
 	@Test
 	public void testIndex() {
+		Iterable<User> userItr = userRepository.findAll();
+		User user1 = userItr.iterator().next();
 
-//		String title = "The Matrix";
-//		ObjectNode result = objectRepository.findByTitle(title);
-//		assertNotNull(result);
-//		assertEquals(1999, result.getReleased());
+		Iterable<ObjectNode> objItr = objectRepository.findAll();
+		ObjectNode obj1 = objItr.iterator().next();
+
+		Iterable<UserAttribute> userAttrItr = userAttributeRepository.findAll();
+		UserAttribute userAttr = userAttrItr.iterator().next();
+
+		Iterable<ObjectAttribute> objAttrItr = objAttrRepository.findAll();
+		ObjectAttribute objectAttr = objAttrItr.iterator().next();
+
+		indexingService.index(singletonList(user1),
+				singletonList(obj1),
+				singletonList(userAttr),
+				singletonList(objectAttr));
+
+		assertNotNull(obj1.getPermissions());
+		assertNotNull(user1.getPermissions());
 	}
 //
 //	/**
