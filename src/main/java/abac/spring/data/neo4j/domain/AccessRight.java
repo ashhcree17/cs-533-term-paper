@@ -5,6 +5,7 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NodeEntity
@@ -16,10 +17,16 @@ public class AccessRight {
     private String type;
 
     @Relationship(type = "ASSOC", direction = Relationship.INCOMING)
-    private List<Role> roles;
+    private List<UserAttribute> userAttributes;
 
     @Relationship(type = "ASSOC", direction = Relationship.OUTGOING)
     private List<ObjectAttribute> objectAttributes;
+
+    public AccessRight() {}
+
+    public AccessRight(String type) {
+        this.type = type;
+    }
 
     public Long getId() {
         return id;
@@ -29,11 +36,25 @@ public class AccessRight {
         return type;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public List<UserAttribute> getUserAttributes() {
+        return userAttributes;
     }
 
     public List<ObjectAttribute> getObjectAttributes() {
         return objectAttributes;
+    }
+
+    public void addUserAttribute(UserAttribute userAttribute) {
+        if (this.userAttributes == null) {
+            this.userAttributes = new ArrayList<>();
+        }
+        this.userAttributes.add(userAttribute);
+    }
+
+    public void addObjectAttribute(ObjectAttribute objectAttribute) {
+        if (this.objectAttributes == null) {
+            this.objectAttributes = new ArrayList<>();
+        }
+        this.objectAttributes.add(objectAttribute);
     }
 }

@@ -6,6 +6,7 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NodeEntity
@@ -17,15 +18,26 @@ public class User {
 
 	@JsonIgnoreProperties("object")
 	@Relationship(type = "ASSIGNED", direction = Relationship.OUTGOING)
-	private List<Role> roles;
+	private List<UserAttribute> userAttributes;
 
 	public User() {}
+
+	public User(List<UserAttribute> userAttributes) {
+		this.userAttributes = userAttributes;
+	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
+	public List<UserAttribute> getUserAttributes() {
+		return userAttributes;
+	}
+
+	public void addUserAttribute(UserAttribute userAttribute) {
+		if (this.userAttributes == null) {
+			this.userAttributes = new ArrayList<>();
+		}
+		this.userAttributes.add(userAttribute);
 	}
 }

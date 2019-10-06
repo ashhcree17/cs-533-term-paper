@@ -1,14 +1,14 @@
 package abac.spring.data.neo4j.repositories;
 
-import abac.spring.data.neo4j.domain.ObjectAttribute;
-import abac.spring.data.neo4j.domain.ObjectNode;
-import abac.spring.data.neo4j.domain.Role;
-import abac.spring.data.neo4j.domain.User;
+import abac.spring.data.neo4j.domain.*;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static java.util.Collections.singletonList;
 //import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
@@ -25,31 +25,55 @@ public class IndexingServiceTest {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private UserAttributeRepository userAttributeRepository;
+
+	@Autowired
+	private AccessRightRepository accessRightRepository;
+
 	@Before
 	public void setUp() {
-		ObjectNode o1 = new ObjectNode();
-		objectRepository.save(o1);
-
+		// set up nodes
 		ObjectAttribute pulse = new ObjectAttribute("type:pulse");
-		objAttrRepository.save(pulse);
 
-		Role researcher = new Role("role:researcher");
+		ObjectNode o1 = new ObjectNode();
+
+		AccessRight read = new AccessRight("read");
+		UserAttribute researcher = new UserAttribute("role:researcher");
+		User u1 = new User(singletonList(researcher));
+
+		// setup relationships
 		o1.addObjectAttribute(pulse);
 
+		u1.addUserAttribute(researcher);
+
+		researcher.addUser(u1);
+		researcher.addAccessRight(read);
+
+		read.addUserAttribute(researcher);
+		read.addObjectAttribute(pulse);
+
+		pulse.addAccessRight(read);
+		pulse.addObjectNode(o1);
+
+		objAttrRepository.save(pulse);
 		objectRepository.save(o1);
+		accessRightRepository.save(read);
+		userAttributeRepository.save(researcher);
+		userRepository.save(u1);
 	}
-//
-//	/**
-//	 * Test of findByTitle method, of class ObjectRepository.
-//	 */
-//	@Test
-//	public void testFindByTitle() {
-//
+
+	/**
+	 * Test of index method, of class IndexingService.
+	 */
+	@Test
+	public void testIndex() {
+
 //		String title = "The Matrix";
 //		ObjectNode result = objectRepository.findByTitle(title);
 //		assertNotNull(result);
 //		assertEquals(1999, result.getReleased());
-//	}
+	}
 //
 //	/**
 //	 * Test of findByTitleContaining method, of class ObjectRepository.
