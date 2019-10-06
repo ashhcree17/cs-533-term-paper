@@ -1,7 +1,7 @@
-package abac.spring.data.neo4j.repositories;
+package abac.spring.data.neo4j.services;
 
 import abac.spring.data.neo4j.domain.*;
-import abac.spring.data.neo4j.services.IndexingService;
+import abac.spring.data.neo4j.repositories.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,11 +37,11 @@ public class IndexingServiceTest {
 	@Before
 	public void setUp() {
 		// set up nodes
-		ObjectAttribute pulse = new ObjectAttribute("type:pulse");
+		ObjectAttribute pulse = new ObjectAttribute();
+		AccessRight read = new AccessRight();
+		UserAttribute researcher = new UserAttribute();
 		ObjectNode o1 = new ObjectNode();
-		AccessRight read = new AccessRight("read");
-		UserAttribute researcher = new UserAttribute("role:researcher");
-		User u1 = new User(singletonList(researcher));
+		User u1 = new User();
 
 		// setup relationships
 		o1.addObjectAttribute(pulse);
@@ -89,32 +89,4 @@ public class IndexingServiceTest {
 		assertNotNull(obj1.getPermissions());
 		assertNotNull(user1.getPermissions());
 	}
-//
-//	/**
-//	 * Test of findByTitleContaining method, of class ObjectRepository.
-//	 */
-//	@Test
-//	public void testFindByTitleContaining() {
-//		String title = "*Matrix*";
-//		Collection<ObjectNode> result = objectRepository.findByTitleLike(title);
-//		assertNotNull(result);
-//		assertEquals(1, result.size());
-//	}
-//
-//	/**
-//	 * Test of graph method, of class ObjectRepository.
-//	 */
-//	@Test
-//	public void testGraph() {
-//		Collection<ObjectNode> graph = objectRepository.graph(5);
-//
-//		assertEquals(1, graph.size());
-//
-//		ObjectNode object = graph.iterator().next();
-//
-//		assertEquals(1, object.getObjectAttributes().size());
-//
-//		assertEquals("The Matrix", object.getTitle());
-//		assertEquals("Keanu Reeves", object.getObjectAttributes().iterator().next().getUser().getName());
-//	}
 }

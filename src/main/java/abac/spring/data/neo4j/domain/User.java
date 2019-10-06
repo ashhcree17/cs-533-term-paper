@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NodeEntity
-public class User {
+public class User implements SourceNode {
 
     @Id
     @GeneratedValue
@@ -24,10 +24,6 @@ public class User {
 
 	public User() {}
 
-	public User(List<UserAttribute> userAttributes) {
-		this.userAttributes = userAttributes;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -38,6 +34,10 @@ public class User {
 
 	public List<Permission> getPermissions() {
 		return permissions;
+	}
+
+	public void setPermissions(List<Permission> permissions) {
+		this.permissions = permissions;
 	}
 
 	public void addUserAttribute(UserAttribute userAttribute) {
@@ -52,5 +52,20 @@ public class User {
 			this.permissions = new ArrayList<>();
 		}
 		this.permissions.add(permission);
+	}
+
+	@Override
+	public List<SourceNode> getNodes() {
+		return nodes;
+	}
+
+	@Override
+	public void addNode(SourceNode sourceNode) {
+		nodes.add(sourceNode);
+	}
+
+	@Override
+	public void setNodes(List<SourceNode> sourceNodes) {
+		nodes.addAll(sourceNodes);
 	}
 }

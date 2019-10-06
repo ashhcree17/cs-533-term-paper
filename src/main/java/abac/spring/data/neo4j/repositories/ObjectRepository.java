@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @RepositoryRestResource(collectionResourceRel = "objects", path = "objects")
 public interface ObjectRepository extends Neo4jRepository<ObjectNode, Long> {
-    @Query("MATCH (m:ObjectNode)<-[r:ACTED_IN]-(a:User) RETURN m,r,a LIMIT {limit}")
+    @Query("MATCH (m:ObjectNode)<-[r:ASSOC]-(a:User) RETURN m,r,a LIMIT {limit}")
 	Collection<ObjectNode> graph(@Param("limit") int limit);
 //
 //    //todo update this

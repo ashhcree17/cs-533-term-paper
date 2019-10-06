@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NodeEntity
-public class ObjectNode {
+public class ObjectNode implements SourceNode {
 
 	@Id
 	@GeneratedValue
@@ -36,6 +36,10 @@ public class ObjectNode {
 		return permissions;
 	}
 
+	public void setPermissions(List<Permission> permissions) {
+		this.permissions = permissions;
+	}
+
 	public void addObjectAttribute(ObjectAttribute objectAttribute) {
 		if (this.objectAttributes == null) {
 			this.objectAttributes = new ArrayList<>();
@@ -48,5 +52,20 @@ public class ObjectNode {
 			this.permissions = new ArrayList<>();
 		}
 		this.permissions.add(permission);
+	}
+
+	@Override
+	public List<SourceNode> getNodes() {
+		return nodes;
+	}
+
+	@Override
+	public void addNode(SourceNode sourceNode) {
+		nodes.add(sourceNode);
+	}
+
+	@Override
+	public void setNodes(List<SourceNode> sourceNodes) {
+		nodes.addAll(sourceNodes);
 	}
 }
