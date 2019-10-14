@@ -5,8 +5,8 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.security.Permission;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @NodeEntity
@@ -20,7 +20,7 @@ public class ObjectNode implements SourceNode {
 	private List<ObjectAttribute> objectAttributes;
 
 	@Relationship(type = "ASSOC", direction = Relationship.DIRECTION)
-	private List<Permission> permissions;
+	private HashMap<SourceNode, User> permissions;
 
 	public ObjectNode() {}
 
@@ -32,11 +32,11 @@ public class ObjectNode implements SourceNode {
 		return objectAttributes;
 	}
 
-	public List<Permission> getPermissions() {
+	public HashMap<SourceNode, User> getPermissions() {
 		return permissions;
 	}
 
-	public void setPermissions(List<Permission> permissions) {
+	public void setPermissions(HashMap<SourceNode, User> permissions) {
 		this.permissions = permissions;
 	}
 
@@ -47,11 +47,11 @@ public class ObjectNode implements SourceNode {
 		this.objectAttributes.add(objectAttribute);
 	}
 
-	public void addPermission(Permission permission) {
+	public void addPermission(SourceNode sourceNode, User user) {
 		if (this.permissions == null) {
-			this.permissions = new ArrayList<>();
+			this.permissions = new HashMap<>();
 		}
-		this.permissions.add(permission);
+		this.permissions.put(sourceNode, user);
 	}
 
 	@Override

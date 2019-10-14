@@ -1,16 +1,16 @@
 package abac.spring.data.neo4j.services;
 
 import abac.spring.data.neo4j.domain.*;
-import abac.spring.data.neo4j.repositories.ObjectRepository;
-import abac.spring.data.neo4j.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 
 @Service
 public class IndexingService {
@@ -20,9 +20,7 @@ public class IndexingService {
 
 	public void index(
 			List<User> users,
-			List<ObjectNode> objectNodes,
-			List<UserAttribute> userAttributes,
-			List<ObjectAttribute> objectAttributes
+			List<ObjectNode> objectNodes
 	) {
 		// *** pseudo code of Algorithm 4 Indexing ***
 
@@ -33,11 +31,13 @@ public class IndexingService {
 
 		// for all users set u.permissions to an empty object --> {}
 		for (User user : users) {
-			user.setPermissions(emptyList());
+			HashMap<SourceNode, ObjectNode> emptyHashMap = new HashMap<>();
+			user.setPermissions(emptyHashMap);
 		}
 		// for all objects set o.permissions to an empty object --> {}
 		for (ObjectNode objectNode : objectNodes) {
-			objectNode.setPermissions(emptyList());
+			HashMap<SourceNode, User> emptyHashMap = new HashMap<>();
+			objectNode.setPermissions(emptyHashMap);
 		}
 
 		// set source_nodes equal to the union of users and objects
@@ -46,7 +46,7 @@ public class IndexingService {
 
 		// for all source_nodes s set s.nodes to set of all nodes visited during DFS traversal from s
 		for (SourceNode sourceNode : sourceNodes) {
-			// todo how is this determined?
+			// todo update how this is determined
 			sourceNode.setNodes(emptyList());
 		}
 
@@ -63,15 +63,14 @@ public class IndexingService {
 							// nodeI is an op node
 							// set u.permissions equal to union of u.permissions and <nodeI, o>
 							user.setPermissions(user.getPermissions());
-//							user.setPermissions(nodeI.getNodes());
+							user.addPermission(nodeI, objectNode);
 
 							// set o.permissions equal to union of o.permissions and <u, nodeI>
 							objectNode.setPermissions(objectNode.getPermissions());
-//							objectNode.setPermissions(nodeI.getNodes());
+							objectNode.addPermission(nodeI, user);
 						}
 					}
 				}
-
 			}
 		}
 	}
