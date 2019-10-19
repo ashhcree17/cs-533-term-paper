@@ -40,17 +40,15 @@ public class IndexingService {
 		DFSUtil(v, visited);
 	}
 
-	public void index(
-			List<User> users,
-			List<ObjectNode> objectNodes
-	) {
-		// *** pseudo code of Algorithm 4 Indexing ***
+	/*
+	Algorithm 4 Indexing
 
-		// input: users, objects, and operations
-		// output: set of permissions for each user node, i.e., u.permissions where u is a user
-		// output: set of permissions for each object node, i.e., o.permissions where o is an object
-		// permission := an ASSOC from a user attribute to an object attribute (permission)
-
+	input: users, objects, and operations
+	output: set of permissions for each user node, i.e., u.permissions where u is a user
+	output: set of permissions for each object node, i.e., o.permissions where o is an object
+	permission := an ASSOC from a user attribute to an object attribute (permission)
+	*/
+	public void index(List<User> users, List<ObjectNode> objectNodes) {
 		// for all users set u.permissions to an empty object --> {}
 		for (User user : users) {
 			HashMap<SourceNode, ObjectNode> emptyHashMap = new HashMap<>();

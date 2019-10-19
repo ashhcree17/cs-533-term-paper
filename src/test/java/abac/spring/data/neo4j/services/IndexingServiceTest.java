@@ -5,22 +5,24 @@ import abac.spring.data.neo4j.repositories.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IndexingServiceTest {
 
-	@Autowired
+	@InjectMocks
 	private IndexingService indexingService;
 
 	@Autowired
-	private ObjectRepository objectRepository;
+	ObjectRepository objectRepository;
 
 	@Autowired
 	private ObjectAttributeRepository objAttrRepository;
@@ -37,9 +39,9 @@ public class IndexingServiceTest {
 	@Before
 	public void setUp() {
 		// set up nodes
-		ObjectAttribute pulse = new ObjectAttribute();
-		AccessRight read = new AccessRight();
-		UserAttribute researcher = new UserAttribute();
+		ObjectAttribute pulse = new ObjectAttribute("type:pulse");
+		AccessRight read = new AccessRight("read");
+		UserAttribute researcher = new UserAttribute("role:researcher");
 		ObjectNode o1 = new ObjectNode();
 		User u1 = new User();
 
@@ -64,21 +66,37 @@ public class IndexingServiceTest {
 		userRepository.save(u1);
 	}
 
-	/**
-	 * Test of index method, of class IndexingService.
-	 */
 	@Test
-	public void testIndex() {
+	public void testIndexPermissions() {
 		Iterable<User> userItr = userRepository.findAll();
 		User user1 = userItr.iterator().next();
 
 		Iterable<ObjectNode> objItr = objectRepository.findAll();
 		ObjectNode obj1 = objItr.iterator().next();
 
-		indexingService.index(singletonList(user1),
-				singletonList(obj1));
+		assertNull(obj1.getPermissions());
+		assertNull(user1.getPermissions());
+
+		indexingService.index(singletonList(user1), singletonList(obj1));
 
 		assertNotNull(obj1.getPermissions());
 		assertNotNull(user1.getPermissions());
+	}
+
+	@Test
+	public void testIndexSourceNodes() {
+		Iterable<User> userItr = userRepository.findAll();
+		User user1 = userItr.iterator().next();
+
+		Iterable<ObjectNode> objItr = objectRepository.findAll();
+		ObjectNode obj1 = objItr.iterator().next();
+
+		assertEquals(emptyList(), obj1.getNodes());
+		assertEquals(emptyList(),user1.getNodes());
+
+		indexingService.index(singletonList(user1), singletonList(obj1));
+
+		assertNotEquals(emptyList(), obj1.getNodes());
+		assertNotEquals(emptyList(),user1.getNodes());
 	}
 }
