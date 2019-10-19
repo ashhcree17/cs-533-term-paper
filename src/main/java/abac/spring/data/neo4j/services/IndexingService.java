@@ -1,49 +1,34 @@
 package abac.spring.data.neo4j.services;
 
-import abac.spring.data.neo4j.domain.ObjectNode;
-import abac.spring.data.neo4j.domain.SourceNode;
-import abac.spring.data.neo4j.domain.User;
+import abac.spring.data.neo4j.domain.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 
 @Service
 public class IndexingService {
-	// Array  of lists for Adjacency List Representation
-	private LinkedList<SourceNode> adj;
+    private final static Logger LOG = LoggerFactory.getLogger(IndexingService.class);
 
 	public IndexingService() {}
 
-	// Recursive function used by DFS function
-	void DFSUtil(SourceNode v, boolean[] visited) {
-		// Mark current node as visited and print it
-		visited[v.getId().intValue()] = true;
-		System.out.print(v+" ");
+	public void index(
+			List<User> users,
+			List<ObjectNode> objectNodes
+	) {
+		// *** pseudo code of Algorithm 4 Indexing ***
 
-		// Repeat for all vertices adjacent to this vertex
-		for (int i = 0; i < adj.size(); i++) {
-			if (!visited[i]) {
-				DFSUtil(adj.get(i), visited);
-			}
-		}
-	}
+		// input: users, objects, and operations
+		// output: set of permissions for each user node, i.e., u.permissions where u is a user
+		// output: set of permissions for each object node, i.e., o.permissions where o is an object
+		// permission := an ASSOC from a user attribute to an object attribute (permission)
 
-	// Function to perform DFS traversal
-	void DFS(SourceNode v) {
-		// Mark all vertices as not visited (set as false by default in Java)
-		boolean[] visited = new boolean[v.getId().intValue()];
-
-		// Call recursive helper function to print DFS traversal
-		DFSUtil(v, visited);
-	}
-
-	// input: users, objects, and operations
-	// output: set of permissions for each user node, i.e., u.permissions where u is a user
-	// output: set of permissions for each object node, i.e., o.permissions where o is an object
-	// permission := an ASSOC from a user attribute to an object attribute (permission)
-	public void index(List<User> users, List<ObjectNode> objectNodes) {
 		// for all users set u.permissions to an empty object --> {}
 		for (User user : users) {
 			HashMap<SourceNode, ObjectNode> emptyHashMap = new HashMap<>();

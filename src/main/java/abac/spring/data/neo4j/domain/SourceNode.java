@@ -9,5 +9,4 @@ public interface SourceNode {
     List<SourceNode> getNodes();
     void addNode(SourceNode sourceNode);
     void setNodes(List<SourceNode> sourceNodes);
-    public Long getId();
 }
