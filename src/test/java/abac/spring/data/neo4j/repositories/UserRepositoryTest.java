@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-public class ObjectRepositoryTest {
+public class UserRepositoryTest {
     @Autowired
     ObjectRepository objectRepository;
 
@@ -66,16 +66,16 @@ public class ObjectRepositoryTest {
 
     @Test
     public void testFindById() {
-        Optional<ObjectNode> resultOpt = objectRepository.findById(1L);
+        Optional<User> resultOpt = userRepository.findById(0L);
         assertTrue(resultOpt.isPresent());
-        ObjectNode result = resultOpt.get();
-        assertEquals(1, result.getObjectAttributes().size());
-        assertEquals("type:pulse", result.getObjectAttributes().get(0).getType());
+        User result = resultOpt.get();
+        assertEquals(1, result.getUserAttributes().size());
+        assertEquals("role:researcher", result.getUserAttributes().get(0).getType());
     }
 
     @Test
     public void testFindAll() {
-        Iterable<ObjectNode> result = objectRepository.findAll();
+        Iterable<User> result = userRepository.findAll();
         assertEquals(1, ((Collection<?>) result).size());
     }
 }

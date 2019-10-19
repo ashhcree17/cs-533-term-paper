@@ -10,15 +10,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-public class ObjectRepositoryTest {
+public class UserAttributeRepositoryTest {
     @Autowired
     ObjectRepository objectRepository;
 
@@ -65,17 +64,25 @@ public class ObjectRepositoryTest {
     }
 
     @Test
-    public void testFindById() {
-        Optional<ObjectNode> resultOpt = objectRepository.findById(1L);
-        assertTrue(resultOpt.isPresent());
-        ObjectNode result = resultOpt.get();
-        assertEquals(1, result.getObjectAttributes().size());
-        assertEquals("type:pulse", result.getObjectAttributes().get(0).getType());
+    public void testFindByType() {
+        UserAttribute result = userAttributeRepository.findByType("role:researcher");
+        assertNotNull(result);
+        assertEquals("role:researcher", result.getType());
+        assertEquals("read", result.getAccessRights().get(0).getType());
+    }
+
+    @Test
+    public void testFindByTypeLike() {
+        Collection<UserAttribute> resultList = userAttributeRepository.findByTypeLike("role:researcher");
+        assertEquals(1, resultList.size());
+        UserAttribute result = resultList.iterator().next();
+        assertEquals("role:researcher", result.getType());
+        assertEquals("read", result.getAccessRights().get(0).getType());
     }
 
     @Test
     public void testFindAll() {
-        Iterable<ObjectNode> result = objectRepository.findAll();
+        Iterable<UserAttribute> result = userAttributeRepository.findAll();
         assertEquals(1, ((Collection<?>) result).size());
     }
 }
