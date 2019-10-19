@@ -75,16 +75,8 @@ public class IndexingServiceTest {
 		Iterable<ObjectNode> objItr = objectRepository.findAll();
 		ObjectNode obj1 = objItr.iterator().next();
 
-		Iterable<UserAttribute> userAttrItr = userAttributeRepository.findAll();
-		UserAttribute userAttr = userAttrItr.iterator().next();
-
-		Iterable<ObjectAttribute> objAttrItr = objAttrRepository.findAll();
-		ObjectAttribute objectAttr = objAttrItr.iterator().next();
-
 		indexingService.index(singletonList(user1),
-				singletonList(obj1),
-				singletonList(userAttr),
-				singletonList(objectAttr));
+				singletonList(obj1));
 
 		assertNotNull(obj1.getPermissions());
 		assertNotNull(user1.getPermissions());

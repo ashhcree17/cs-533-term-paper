@@ -10,8 +10,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -67,7 +69,7 @@ public class ObjectRepositoryTest {
      */
     @Test
     public void testGraph() {
-        Collection<ObjectNode> graph = objectRepository.graph(5);
-        assertEquals(1, graph.size());
+        Optional<ObjectNode> result = objectRepository.findById(1L);
+        assertTrue(result.isPresent());
     }
 }
