@@ -84,12 +84,7 @@ public class UserAttribute implements SourceNode {
 	}
 
 	@Override
-	public void setSourceNodeType(String sourceNodeType) {
-		this.sourceNodeType = sourceNodeType;
-	}
-
-	@Override
 	public String getSourceNodeType() {
-		return this.sourceNodeType;
+		return "UserAttribute";
 	}
 }

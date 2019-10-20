@@ -11,6 +11,5 @@ public interface SourceNode {
     void addNode(SourceNode sourceNode);
     void setNodes(List<SourceNode> sourceNodes);
     Long getId();
-    void setSourceNodeType(String sourceNodeType);
     String getSourceNodeType();
 }

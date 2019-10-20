@@ -107,6 +107,10 @@ public class IndexingServiceTest {
 		SourceNode researcher = new UserAttribute("role:researcher");
 		SourceNode o1 = new ObjectNode();
 		SourceNode u1 = new User();
+		System.out.print("object 1 nodes from 'dfs': ");
+		System.out.print(obj1.getNodes());
+		System.out.print("user 1 nodes from 'dfs': ");
+		System.out.print(user1.getNodes());
 		assertEquals(asList(pulse, read, researcher, u1), obj1.getNodes());
 		assertEquals(asList(researcher, read, pulse, o1),user1.getNodes());
 	}

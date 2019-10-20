@@ -1,16 +1,11 @@
 package abac.spring.data.neo4j.services;
 
-import abac.spring.data.neo4j.domain.ObjectNode;
-import abac.spring.data.neo4j.domain.SourceNode;
-import abac.spring.data.neo4j.domain.User;
+import abac.spring.data.neo4j.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-
-import static java.util.Collections.emptyList;
 
 @Service
 public class IndexingService {
@@ -24,9 +19,57 @@ public class IndexingService {
 //				.sort(new PathComparatorByName())
 //				.relationships(association, Direction.OUTGOING);
 
-		System.out.print("traversal description: ");
-//		System.out.print(traversalDescription);
-//		v.addNode(v);
+		String sourceNodeType = v.getSourceNodeType();
+		switch(sourceNodeType) {
+			case "ObjectNode":
+				ObjectNode objectNode = (ObjectNode) v;
+				List<ObjectAttribute> objectAttributes = objectNode.getObjectAttributes();
+				for (ObjectAttribute objectAttribute : objectAttributes) {
+					v.addNode(objectAttribute);
+				}
+				break;
+			case "User":
+				User user = (User) v;
+				List<UserAttribute> userAttributes = user.getUserAttributes();
+				for (UserAttribute userAttribute : userAttributes) {
+					v.addNode(userAttribute);
+				}
+				break;
+			case "ObjectAttribute":
+				ObjectAttribute objectAttribute = (ObjectAttribute) v;
+				List<AccessRight> accessRights = objectAttribute.getAccessRights();
+				for (AccessRight accessRight : accessRights) {
+					v.addNode(accessRight);
+				}
+				List<ObjectNode> objectNodes = objectAttribute.getObjectNodes();
+				for (ObjectNode objectNode1 : objectNodes) {
+					v.addNode(objectNode1);
+				}
+				break;
+			case "UserAttribute":
+				UserAttribute userAttribute = (UserAttribute) v;
+				List<AccessRight> accessRights1 = userAttribute.getAccessRights();
+				for (AccessRight accessRight : accessRights1) {
+					v.addNode(accessRight);
+				}
+				List<User> users = userAttribute.getUsers();
+				for (User user1 : users) {
+					v.addNode(user1);
+				}
+				break;
+			case "AccessRight":
+				AccessRight accessRight = (AccessRight) v;
+				List<UserAttribute> userAttributes1 = accessRight.getUserAttributes();
+				for (UserAttribute userAttribute1 : userAttributes1) {
+					v.addNode(userAttribute1);
+				}
+				List<ObjectAttribute> objectAttributes1 = accessRight.getObjectAttributes();
+				for (ObjectAttribute objectAttribute1 : objectAttributes1) {
+					v.addNode(objectAttribute1);
+				}
+				break;
+
+		}
 	}
 
 	/*
