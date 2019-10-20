@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface SourceNode {
-    List<SourceNode> nodes = new ArrayList<>();
+//    List<SourceNode> nodes = new ArrayList<>();
+//    String sourceNodeType = null;
 
     List<SourceNode> getNodes();
     void addNode(SourceNode sourceNode);
     void setNodes(List<SourceNode> sourceNodes);
     Long getId();
+    void setSourceNodeType(String sourceNodeType);
+    String getSourceNodeType();
 }

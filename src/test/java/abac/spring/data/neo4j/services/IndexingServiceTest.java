@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.*;
@@ -91,12 +92,22 @@ public class IndexingServiceTest {
 		Iterable<ObjectNode> objItr = objectRepository.findAll();
 		ObjectNode obj1 = objItr.iterator().next();
 
-		assertEquals(emptyList(), obj1.getNodes());
-		assertEquals(emptyList(),user1.getNodes());
+		assertNull(obj1.getNodes());
+		assertNull(user1.getNodes());
 
 		indexingService.index(singletonList(user1), singletonList(obj1));
 
+		assertNotNull(obj1.getNodes());
+		assertNotNull(user1.getNodes());
 		assertNotEquals(emptyList(), obj1.getNodes());
 		assertNotEquals(emptyList(),user1.getNodes());
+
+		SourceNode pulse = new ObjectAttribute("type:pulse");
+		SourceNode read = new AccessRight("read");
+		SourceNode researcher = new UserAttribute("role:researcher");
+		SourceNode o1 = new ObjectNode();
+		SourceNode u1 = new User();
+		assertEquals(asList(pulse, read, researcher, u1), obj1.getNodes());
+		assertEquals(asList(researcher, read, pulse, o1),user1.getNodes());
 	}
 }

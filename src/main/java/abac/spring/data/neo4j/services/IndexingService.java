@@ -14,30 +14,19 @@ import static java.util.Collections.emptyList;
 
 @Service
 public class IndexingService {
-	// Array  of lists for Adjacency List Representation
-	private LinkedList<SourceNode> adj;
 	public IndexingService() {}
 
-	// Recursive function used by DFS function
-	void DFSUtil(SourceNode v, boolean[] visited) {
-		// Mark current node as visited and print it
-		visited[v.getId().intValue()] = true;
-		System.out.print(v+" ");
-
-		for (int i = 0; i < adj.size(); i++) {
-			if (!visited[i]) {
-				DFSUtil(adj.get(i), visited);
-			}
-		}
-	}
-
-	// Function to perform DFS traversal
 	void DFS(SourceNode v) {
-		// Mark all vertices as not visited (set as false by default in Java)
-		boolean[] visited = new boolean[v.getId().intValue()];
+//	 GraphDatabaseService database = new TestGraphDatabaseFactory().newImpermanentDatabaseBuilder().newGraphDatabase();
+//		RelationshipType association = () -> "ASSOC";
+//		TraversalDescription traversalDescription = database.traversalDescription()
+//				.depthFirst()
+//				.sort(new PathComparatorByName())
+//				.relationships(association, Direction.OUTGOING);
 
-		// Call recursive helper function to print DFS traversal
-		DFSUtil(v, visited);
+		System.out.print("traversal description: ");
+//		System.out.print(traversalDescription);
+//		v.addNode(v);
 	}
 
 	/*
@@ -66,8 +55,7 @@ public class IndexingService {
 
 		// for all source_nodes s set s.nodes to set of all nodes visited during DFS traversal from s
 		for (SourceNode sourceNode : sourceNodes) {
-			// todo update how this is determined
-			sourceNode.setNodes(emptyList());
+			DFS(sourceNode);
 		}
 
 		// for all users do

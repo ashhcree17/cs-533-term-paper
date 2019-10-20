@@ -9,18 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NodeEntity
-public class ObjectAttribute {
+public class ObjectAttribute implements SourceNode {
 
     @Id
     @GeneratedValue
     private Long id;
     private String type;
+    private String sourceNodeType;
 
     @Relationship(type = "ASSIGN", direction = Relationship.INCOMING)
     private List<ObjectNode> objectNodes;
 
     @Relationship(type = "ASSOC", direction = Relationship.INCOMING)
     private List<AccessRight> accessRights;
+
+    @Relationship(direction = Relationship.UNDIRECTED)
+    private List<SourceNode> sourceNodes;
 
     public ObjectAttribute() {}
 
@@ -56,5 +60,36 @@ public class ObjectAttribute {
             this.objectNodes = new ArrayList<>();
         }
         this.objectNodes.add(objectNode);
+    }
+
+    @Override
+    public List<SourceNode> getNodes() {
+        return this.sourceNodes;
+    }
+
+    @Override
+    public void addNode(SourceNode sourceNode) {
+        if (this.sourceNodes == null) {
+            this.sourceNodes = new ArrayList<>();
+        }
+        this.sourceNodes.add(sourceNode);
+    }
+
+    @Override
+    public void setNodes(List<SourceNode> sourceNodes) {
+        if (this.sourceNodes == null) {
+            this.sourceNodes = new ArrayList<>();
+        }
+        this.sourceNodes.addAll(sourceNodes);
+    }
+
+    @Override
+    public void setSourceNodeType(String sourceNodeType) {
+        this.sourceNodeType = sourceNodeType;
+    }
+
+    @Override
+    public String getSourceNodeType() {
+        return this.sourceNodeType;
     }
 }

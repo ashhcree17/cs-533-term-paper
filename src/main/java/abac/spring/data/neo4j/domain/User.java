@@ -15,12 +15,16 @@ public class User implements SourceNode {
     @Id
     @GeneratedValue
 	private Long id;
+	private String sourceNodeType;
 
 	@Relationship(type = "ASSIGN", direction = Relationship.OUTGOING)
 	private List<UserAttribute> userAttributes;
 
 	@Relationship(type = "ASSOC", direction = Relationship.DIRECTION)
 	private HashMap<SourceNode, ObjectNode> permissions;
+
+	@Relationship(direction = Relationship.UNDIRECTED)
+	private List<SourceNode> sourceNodes;
 
 	public User() {}
 
@@ -56,16 +60,32 @@ public class User implements SourceNode {
 
 	@Override
 	public List<SourceNode> getNodes() {
-		return nodes;
+		return this.sourceNodes;
 	}
 
 	@Override
 	public void addNode(SourceNode sourceNode) {
-		nodes.add(sourceNode);
+		if (this.sourceNodes == null) {
+			this.sourceNodes = new ArrayList<>();
+		}
+		this.sourceNodes.add(sourceNode);
 	}
 
 	@Override
 	public void setNodes(List<SourceNode> sourceNodes) {
-		nodes.addAll(sourceNodes);
+		if (this.sourceNodes == null) {
+			this.sourceNodes = new ArrayList<>();
+		}
+		this.sourceNodes.addAll(sourceNodes);
+	}
+
+	@Override
+	public void setSourceNodeType(String sourceNodeType) {
+		this.sourceNodeType = sourceNodeType;
+	}
+
+	@Override
+	public String getSourceNodeType() {
+		return this.sourceNodeType;
 	}
 }
