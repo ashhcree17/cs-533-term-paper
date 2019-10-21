@@ -65,6 +65,7 @@ public class IndexingServiceTest {
 		accessRightRepository.save(read);
 		userAttributeRepository.save(researcher);
 		userRepository.save(u1);
+		indexingService = new IndexingService(objectRepository, objAttrRepository, userRepository, userAttributeRepository, accessRightRepository);
 	}
 
 	@Test
