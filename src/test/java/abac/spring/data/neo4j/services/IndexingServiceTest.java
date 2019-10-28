@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -37,14 +39,20 @@ public class IndexingServiceTest {
 	@Autowired
 	private AccessRightRepository accessRightRepository;
 
+	ObjectAttribute pulse;
+	AccessRight read;
+	UserAttribute researcher;
+	ObjectNode o1;
+	User u1;
+
 	@Before
 	public void setUp() {
 		// set up nodes
-		ObjectAttribute pulse = new ObjectAttribute("type:pulse");
-		AccessRight read = new AccessRight("read");
-		UserAttribute researcher = new UserAttribute("role:researcher");
-		ObjectNode o1 = new ObjectNode();
-		User u1 = new User();
+		pulse = new ObjectAttribute("type:pulse");
+		read = new AccessRight("read");
+		researcher = new UserAttribute("role:researcher");
+		o1 = new ObjectNode();
+		u1 = new User();
 
 		// setup relationships
 		o1.addObjectAttribute(pulse);
@@ -60,11 +68,11 @@ public class IndexingServiceTest {
 		pulse.addAccessRight(read);
 		pulse.addObjectNode(o1);
 
-		objAttrRepository.save(pulse);
-		objectRepository.save(o1);
-		accessRightRepository.save(read);
-		userAttributeRepository.save(researcher);
-		userRepository.save(u1);
+		pulse = objAttrRepository.save(pulse);
+		o1 = objectRepository.save(o1);
+		read = accessRightRepository.save(read);
+		researcher = userAttributeRepository.save(researcher);
+		u1 = userRepository.save(u1);
 		indexingService = new IndexingService(objectRepository, objAttrRepository, userRepository, userAttributeRepository, accessRightRepository);
 	}
 
@@ -101,18 +109,20 @@ public class IndexingServiceTest {
 		assertNotNull(obj1.getNodes());
 		assertNotNull(user1.getNodes());
 		assertNotEquals(emptyList(), obj1.getNodes());
-		assertNotEquals(emptyList(),user1.getNodes());
+		assertNotEquals(emptyList(), user1.getNodes());
 
-		SourceNode pulse = new ObjectAttribute("type:pulse");
-		SourceNode read = new AccessRight("read");
-		SourceNode researcher = new UserAttribute("role:researcher");
-		SourceNode o1 = new ObjectNode();
-		SourceNode u1 = new User();
-		System.out.print("object 1 nodes from 'dfs': ");
-		System.out.print(obj1.getNodes());
-		System.out.print("user 1 nodes from 'dfs': ");
-		System.out.print(user1.getNodes());
-		assertEquals(asList(pulse, read, researcher, u1), obj1.getNodes());
-		assertEquals(asList(researcher, read, pulse, o1),user1.getNodes());
+		List<SourceNode> sourceNodeList = obj1.getNodes();
+		// Verify that all nodes expected from DFS are returned in the object's node list
+		assertEquals(u1.getId(), sourceNodeList.get(0).getId());
+		assertEquals(researcher.getId(), sourceNodeList.get(1).getId());
+		assertEquals(pulse.getId(), sourceNodeList.get(2).getId());
+		assertEquals(read.getId(), sourceNodeList.get(3).getId());
+
+		List<SourceNode> userNodeList = user1.getNodes();
+		// Verify that all nodes expected from DFS are returned in the user's node list
+		assertEquals(researcher.getId(), userNodeList.get(0).getId());
+		assertEquals(o1.getId(), userNodeList.get(1).getId());
+		assertEquals(pulse.getId(), userNodeList.get(2).getId());
+		assertEquals(read.getId(), userNodeList.get(3).getId());
 	}
 }

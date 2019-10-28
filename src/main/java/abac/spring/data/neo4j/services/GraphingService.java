@@ -55,7 +55,7 @@ public class GraphingService {
 
 	@Transactional(readOnly = true)
 	public Map<String, Object> graph(int limit) {
-		Collection<ObjectNode> result = objectRepository.graph(limit);
+		Collection<ObjectNode> result = objectRepository.graph();
 		return toD3Format(result);
 	}
 }

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,70 +41,15 @@ public class IndexingService {
 	public IndexingService() {}
 
 	void DFS(SourceNode v) {
-//	 GraphDatabaseService database = new TestGraphDatabaseFactory().newImpermanentDatabaseBuilder().newGraphDatabase();
-//		RelationshipType association = () -> "ASSOC";
-//		TraversalDescription traversalDescription = database.traversalDescription()
-//				.depthFirst()
-//				.sort(new PathComparatorByName())
-//				.relationships(association, Direction.OUTGOING);
-
-//		String sourceNodeType = v.getSourceNodeType();
-//		switch(sourceNodeType) {
-//			case "ObjectNode":
-//				ObjectNode objectNode = (ObjectNode) v;
-//				List<ObjectAttribute> objectAttributes = objectNode.getObjectAttributes();
-//				for (ObjectAttribute objectAttribute : objectAttributes) {
-//					v.addNode(objectAttribute);
-//				}
-//				break;
-//			case "User":
-//				User user = (User) v;
-//				List<UserAttribute> userAttributes = user.getUserAttributes();
-//				for (UserAttribute userAttribute : userAttributes) {
-//					v.addNode(userAttribute);
-//				}
-//				break;
-//			case "ObjectAttribute":
-//				ObjectAttribute objectAttribute = (ObjectAttribute) v;
-//				List<AccessRight> accessRights = objectAttribute.getAccessRights();
-//				for (AccessRight accessRight : accessRights) {
-//					v.addNode(accessRight);
-//				}
-//				List<ObjectNode> objectNodes = objectAttribute.getObjectNodes();
-//				for (ObjectNode objectNode1 : objectNodes) {
-//					v.addNode(objectNode1);
-//				}
-//				break;
-//			case "UserAttribute":
-//				UserAttribute userAttribute = (UserAttribute) v;
-//				List<AccessRight> accessRights1 = userAttribute.getAccessRights();
-//				for (AccessRight accessRight : accessRights1) {
-//					v.addNode(accessRight);
-//				}
-//				List<User> users = userAttribute.getUsers();
-//				for (User user1 : users) {
-//					v.addNode(user1);
-//				}
-//				break;
-//			case "AccessRight":
-//				AccessRight accessRight = (AccessRight) v;
-//				List<UserAttribute> userAttributes1 = accessRight.getUserAttributes();
-//				for (UserAttribute userAttribute1 : userAttributes1) {
-//					v.addNode(userAttribute1);
-//				}
-//				List<ObjectAttribute> objectAttributes1 = accessRight.getObjectAttributes();
-//				for (ObjectAttribute objectAttribute1 : objectAttributes1) {
-//					v.addNode(objectAttribute1);
-//				}
-//				break;
-//
-//		}
 		System.out.println("start of DFS");
 
-		Collection<SourceNode> sourceNodes = objectRepository.dfs();
+		List<SourceNode> sourceNodes = objectRepository.dfs();
+		sourceNodes.removeIf(n -> n.getId().equals(v.getId()));
+		v.setNodes(sourceNodes);
 
 		System.out.println("end of DFS");
-		System.out.print("object source nodes: ");
+
+		System.out.print("source nodes: ");
 		System.out.print(sourceNodes);
 	}
 
