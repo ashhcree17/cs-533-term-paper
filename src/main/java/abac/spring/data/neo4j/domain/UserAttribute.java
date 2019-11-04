@@ -20,10 +20,10 @@ public class UserAttribute implements SourceNode {
 	@Relationship(type = "ASSIGN", direction = Relationship.INCOMING)
 	private List<User> users;
 
-	@Relationship(type = "ASSOC", direction = Relationship.OUTGOING)
-	private List<AccessRight> accessRights;
+	@Relationship(type = "ASSOC")
+	private List<ObjectAttribute> permissions;
 
-	@Relationship(direction = Relationship.UNDIRECTED)
+//	@Relationship(direction = Relationship.UNDIRECTED)
 	private List<SourceNode> sourceNodes;
 
 	public UserAttribute() {}
@@ -44,8 +44,8 @@ public class UserAttribute implements SourceNode {
 		return users;
 	}
 
-	public List<AccessRight> getAccessRights() {
-		return accessRights;
+	public List<ObjectAttribute> getPermissions() {
+		return permissions;
 	}
 
 	public void addUser(User user) {
@@ -55,11 +55,11 @@ public class UserAttribute implements SourceNode {
 		this.users.add(user);
 	}
 
-	public void addAccessRight(AccessRight accessRight) {
-		if (this.accessRights == null) {
-			this.accessRights = new ArrayList<>();
+	public void addPermission(ObjectAttribute permission) {
+		if (this.permissions == null) {
+			this.permissions = new ArrayList<>();
 		}
-		this.accessRights.add(accessRight);
+		this.permissions.add(permission);
 	}
 
 	@Override

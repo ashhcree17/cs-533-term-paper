@@ -23,7 +23,7 @@ public class AccessRight implements SourceNode {
     @Relationship(type = "ASSOC", direction = Relationship.OUTGOING)
     private List<ObjectAttribute> objectAttributes;
 
-    @Relationship(direction = Relationship.UNDIRECTED)
+//    @Relationship(direction = Relationship.UNDIRECTED)
     private List<SourceNode> sourceNodes;
 
     public AccessRight() {}

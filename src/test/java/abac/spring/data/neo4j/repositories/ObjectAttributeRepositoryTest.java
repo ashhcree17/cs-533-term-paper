@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -33,11 +32,14 @@ public class ObjectAttributeRepositoryTest {
     @Autowired
     private AccessRightRepository accessRightRepository;
 
+//    @Autowired
+//    private PermissionRepository permissionRepository;
+
     @Before
     public void setUp() {
         // set up nodes
         ObjectAttribute pulse = new ObjectAttribute("type:pulse");
-        AccessRight read = new AccessRight("read");
+        Permission read = new Permission();
         UserAttribute researcher = new UserAttribute("role:researcher");
         ObjectNode o1 = new ObjectNode();
         User u1 = new User();
@@ -48,17 +50,17 @@ public class ObjectAttributeRepositoryTest {
         u1.addUserAttribute(researcher);
 
         researcher.addUser(u1);
-        researcher.addAccessRight(read);
+        researcher.addPermission(pulse);
 
-        read.addUserAttribute(researcher);
-        read.addObjectAttribute(pulse);
+        read.setUserAttribute(researcher);
+        read.setObjectAttribute(pulse);
 
-        pulse.addAccessRight(read);
+        pulse.addPermission(read);
         pulse.addObjectNode(o1);
 
         objAttrRepository.save(pulse);
         objectRepository.save(o1);
-        accessRightRepository.save(read);
+//        permissionRepository.save(read);
         userAttributeRepository.save(researcher);
         userRepository.save(u1);
     }
@@ -68,7 +70,7 @@ public class ObjectAttributeRepositoryTest {
         ObjectAttribute result = objAttrRepository.findByType("type:pulse");
         assertNotNull(result);
         assertEquals("type:pulse", result.getType());
-        assertEquals("read", result.getAccessRights().get(0).getType());
+        assertNotNull(result.getPermissions().get(0));
     }
 
     @Test
@@ -77,7 +79,7 @@ public class ObjectAttributeRepositoryTest {
         assertEquals(1, resultList.size());
         ObjectAttribute result = resultList.iterator().next();
         assertEquals("type:pulse", result.getType());
-        assertEquals("read", result.getAccessRights().get(0).getType());
+        assertNotNull(result.getPermissions().get(0));
     }
 
     @Test

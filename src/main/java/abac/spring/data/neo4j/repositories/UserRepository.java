@@ -15,6 +15,14 @@ public interface UserRepository extends Neo4jRepository<User, Long> {
     @Query("MATCH (m:User)<-[r:ASSIGN]-(a:UserAttribute) RETURN m,r,a LIMIT {limit}")
     Collection<User> graph(@Param("limit") int limit);
 
-    @Query("MATCH (m)<-[:ASSIGN|ASSOC]-(n) RETURN m,n")
+//    @Query("MATCH (m)<-[:ASSIGN|ASSOC]-(n) RETURN m,n")
+//    List<SourceNode> dfs();
+
+    //match (Yoav:Person{name:"Yoav"})-[:liked]->(movie:Movie),
+    //(Yoav)-[:watched]->(movie),
+    //(Yoav)-[:other]->(movie)
+    //return movie
+
+    @Query("MATCH (a:User) <-[:ASSIGN|ASSOC]- (b) RETURN b")
     List<SourceNode> dfs();
 }

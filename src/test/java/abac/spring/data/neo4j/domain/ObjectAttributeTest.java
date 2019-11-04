@@ -18,18 +18,18 @@ public class ObjectAttributeTest {
     @Test
     public void testAddAccessRight() {
         ObjectAttribute objectAttribute = new ObjectAttribute("type:pulse");
-        assertNull(objectAttribute.getAccessRights());
+        assertNull(objectAttribute.getPermissions());
 
-        AccessRight accessRight = new AccessRight("read");
-        objectAttribute.addAccessRight(accessRight);
+        Permission accessRight = new Permission();
+        objectAttribute.addPermission(accessRight);
 
-        assertEquals(singletonList(accessRight), objectAttribute.getAccessRights());
+        assertEquals(singletonList(accessRight), objectAttribute.getPermissions());
     }
 
     @Test
     public void testAddObjectNode() {
         ObjectAttribute objectAttribute = new ObjectAttribute("type:pulse");
-        assertNull(objectAttribute.getAccessRights());
+        assertNull(objectAttribute.getPermissions());
 
         ObjectNode objectNode = new ObjectNode();
         objectAttribute.addObjectNode(objectNode);

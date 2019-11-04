@@ -14,6 +14,6 @@ public interface ObjectRepository extends Neo4jRepository<ObjectNode, Long> {
     @Query("MATCH (m:ObjectNode)<-[r:ASSIGN]-(a:ObjectAttribute) RETURN m,r,a")
 	Collection<ObjectNode> graph();
 
-    @Query("MATCH (m)<-[:ASSIGN|ASSOC]-(n) RETURN m,n")
+    @Query("MATCH (m)<-[:ASSIGN|ASSOC]-(n) RETURN n")
     List<SourceNode> dfs();
 }

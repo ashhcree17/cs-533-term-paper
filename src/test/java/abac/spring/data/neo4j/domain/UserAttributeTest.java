@@ -18,12 +18,14 @@ public class UserAttributeTest {
     @Test
     public void testAddAccessRight() {
         UserAttribute userAttribute = new UserAttribute("role:researcher");
-        assertNull(userAttribute.getAccessRights());
+        assertNull(userAttribute.getPermissions());
 
-        AccessRight accessRight = new AccessRight("read");
-        userAttribute.addAccessRight(accessRight);
+        ObjectAttribute objectAttribute = new ObjectAttribute("type:pulse");
 
-        assertEquals(singletonList(accessRight), userAttribute.getAccessRights());
+        Permission accessRight = new Permission();
+        userAttribute.addPermission(objectAttribute);
+
+        assertEquals(singletonList(accessRight), userAttribute.getPermissions());
     }
 
     @Test

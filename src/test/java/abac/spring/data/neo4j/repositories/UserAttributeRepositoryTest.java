@@ -33,11 +33,14 @@ public class UserAttributeRepositoryTest {
     @Autowired
     private AccessRightRepository accessRightRepository;
 
+//    @Autowired
+//    private PermissionRepository permissionRepository;
+
     @Before
     public void setUp() {
         // set up nodes
         ObjectAttribute pulse = new ObjectAttribute("type:pulse");
-        AccessRight read = new AccessRight("read");
+        Permission read = new Permission();
         UserAttribute researcher = new UserAttribute("role:researcher");
         ObjectNode o1 = new ObjectNode();
         User u1 = new User();
@@ -48,17 +51,17 @@ public class UserAttributeRepositoryTest {
         u1.addUserAttribute(researcher);
 
         researcher.addUser(u1);
-        researcher.addAccessRight(read);
+        researcher.addPermission(pulse);
 
-        read.addUserAttribute(researcher);
-        read.addObjectAttribute(pulse);
+        read.setUserAttribute(researcher);
+        read.setObjectAttribute(pulse);
 
-        pulse.addAccessRight(read);
+        pulse.addPermission(read);
         pulse.addObjectNode(o1);
 
         objAttrRepository.save(pulse);
         objectRepository.save(o1);
-        accessRightRepository.save(read);
+//        permissionRepository.save(read);
         userAttributeRepository.save(researcher);
         userRepository.save(u1);
     }
@@ -68,7 +71,7 @@ public class UserAttributeRepositoryTest {
         UserAttribute result = userAttributeRepository.findByType("role:researcher");
         assertNotNull(result);
         assertEquals("role:researcher", result.getType());
-        assertEquals("read", result.getAccessRights().get(0).getType());
+        assertEquals("read", result.getPermissions().get(0).getType());
     }
 
     @Test
@@ -77,7 +80,7 @@ public class UserAttributeRepositoryTest {
         assertEquals(1, resultList.size());
         UserAttribute result = resultList.iterator().next();
         assertEquals("role:researcher", result.getType());
-        assertEquals("read", result.getAccessRights().get(0).getType());
+        assertEquals("read", result.getPermissions().get(0).getType());
     }
 
     @Test

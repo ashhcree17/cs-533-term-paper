@@ -20,10 +20,10 @@ public class ObjectNode implements SourceNode {
 	@Relationship(type = "ASSIGN", direction = Relationship.OUTGOING)
 	private List<ObjectAttribute> objectAttributes;
 
-	@Relationship(type = "ASSOC", direction = Relationship.DIRECTION)
+//	@Relationship(type = "ASSOC", direction = Relationship.DIRECTION)
 	private HashMap<SourceNode, User> permissions;
 
-	@Relationship(direction = Relationship.UNDIRECTED)
+//	@Relationship(direction = Relationship.UNDIRECTED)
 	private List<SourceNode> sourceNodes;
 
 	public ObjectNode() {}

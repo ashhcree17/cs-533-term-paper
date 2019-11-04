@@ -21,9 +21,9 @@ public class ObjectAttribute implements SourceNode {
     private List<ObjectNode> objectNodes;
 
     @Relationship(type = "ASSOC", direction = Relationship.INCOMING)
-    private List<AccessRight> accessRights;
+    private List<Permission> permissions;
 
-    @Relationship(direction = Relationship.UNDIRECTED)
+//    @Relationship(direction = Relationship.UNDIRECTED)
     private List<SourceNode> sourceNodes;
 
     public ObjectAttribute() {}
@@ -44,15 +44,15 @@ public class ObjectAttribute implements SourceNode {
         return objectNodes;
     }
 
-    public List<AccessRight> getAccessRights() {
-        return accessRights;
+    public List<Permission> getPermissions() {
+        return permissions;
     }
 
-    public void addAccessRight(AccessRight accessRight) {
-        if (this.accessRights == null) {
-            this.accessRights = new ArrayList<>();
+    public void addPermission(Permission permission) {
+        if (this.permissions == null) {
+            this.permissions = new ArrayList<>();
         }
-        this.accessRights.add(accessRight);
+        this.permissions.add(permission);
     }
 
     public void addObjectNode(ObjectNode objectNode) {
