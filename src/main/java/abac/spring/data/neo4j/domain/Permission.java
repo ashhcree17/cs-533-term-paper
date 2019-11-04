@@ -11,7 +11,8 @@ public class Permission {
     @Id
     @GeneratedValue
     private Long id;
-    private List<String> permissions = new ArrayList<>();
+    @Property
+    private String type;
 
     @StartNode
     private UserAttribute userAttribute;
@@ -21,8 +22,16 @@ public class Permission {
 
     public Permission() {}
 
+    public Permission(String type) {
+        this.type = type;
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public UserAttribute getUserAttribute() {

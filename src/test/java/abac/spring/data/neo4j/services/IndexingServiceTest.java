@@ -1,8 +1,10 @@
 package abac.spring.data.neo4j.services;
 
 import abac.spring.data.neo4j.domain.*;
-import abac.spring.data.neo4j.repositories.*;
-import org.junit.Before;
+import abac.spring.data.neo4j.repositories.ObjectAttributeRepository;
+import abac.spring.data.neo4j.repositories.ObjectRepository;
+import abac.spring.data.neo4j.repositories.UserAttributeRepository;
+import abac.spring.data.neo4j.repositories.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -10,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -36,12 +36,6 @@ public class IndexingServiceTest {
 
 	@Autowired
 	private UserAttributeRepository userAttributeRepository;
-
-	@Autowired
-	private AccessRightRepository accessRightRepository;
-
-//	@Autowired
-//	private PermissionRepository permissionRepository;
 
 	private ObjectAttribute pulse;
 	private ObjectAttribute steps;
@@ -74,49 +68,11 @@ public class IndexingServiceTest {
 	private User u7;
 	private User u8;
 
-	@Before
-	public void setUp() {
-
-
-	}
-
-//	@Before
-//	public void setUp() {
-		// set up nodes
-//		pulse = new ObjectAttribute("type:pulse");
-//		read = new AccessRight("read");
-//		researcher = new UserAttribute("role:researcher");
-//		o1 = new ObjectNode();
-//		u1 = new User();
-//
-//		// setup relationships
-//		o1.addObjectAttribute(pulse);
-//
-//		u1.addUserAttribute(researcher);
-//
-//		researcher.addUser(u1);
-//		researcher.addPermission(read);
-//
-//		read.addUserAttribute(researcher);
-//		read.addObjectAttribute(pulse);
-//
-//		pulse.addPermission(read);
-//		pulse.addObjectNode(o1);
-//
-//		// Saving nodes and relationships creates a simple Neo4j policy graph
-//		pulse = objAttrRepository.save(pulse);
-//		o1 = objectRepository.save(o1);
-//		read = accessRightRepository.save(read);
-//		researcher = userAttributeRepository.save(researcher);
-//		u1 = userRepository.save(u1);
-//		indexingService = new IndexingService(objectRepository, objAttrRepository, userRepository, userAttributeRepository, accessRightRepository);
-//	}
-
 	@Test
 	public void testIndexSourceNodes() {
 		// Start of Neo4J setup:
 		pulse = new ObjectAttribute("type:pulse");
-		read = new Permission();
+		read = new Permission("read");
 		researcher = new UserAttribute("role:researcher");
 		o1 = new ObjectNode();
 		u1 = new User();
@@ -138,10 +94,9 @@ public class IndexingServiceTest {
 		// Saving nodes and relationships creates a simple Neo4j policy graph
 		pulse = objAttrRepository.save(pulse);
 		o1 = objectRepository.save(o1);
-//		read = permissionRepository.save(read);
 		researcher = userAttributeRepository.save(researcher);
 		u1 = userRepository.save(u1);
-		indexingService = new IndexingService(objectRepository, objAttrRepository, userRepository, userAttributeRepository, accessRightRepository);
+		indexingService = new IndexingService(objectRepository, objAttrRepository, userRepository, userAttributeRepository);
 
 		Iterable<User> userItr = userRepository.findAll();
 		User user1 = userItr.iterator().next();
@@ -164,14 +119,14 @@ public class IndexingServiceTest {
 		assertEquals(u1.getId(), sourceNodeList.get(0).getId());
 		assertEquals(researcher.getId(), sourceNodeList.get(1).getId());
 		assertEquals(pulse.getId(), sourceNodeList.get(2).getId());
-		assertEquals(read.getId(), sourceNodeList.get(3).getId());
+		assertEquals(read.getType(), ((ObjectAttribute) sourceNodeList.get(2)).getPermissions().get(0).getType());
 
 		List<SourceNode> userNodeList = user1.getNodes();
 		// Verify that all nodes expected from DFS are returned in the user's node list
 		assertEquals(researcher.getId(), userNodeList.get(0).getId());
 		assertEquals(o1.getId(), userNodeList.get(1).getId());
 		assertEquals(pulse.getId(), userNodeList.get(2).getId());
-		assertEquals(read.getId(), userNodeList.get(3).getId());
+		assertEquals(read.getType(), ((ObjectAttribute) userNodeList.get(2)).getPermissions().get(0).getType());
 	}
 
 	/*
@@ -349,7 +304,7 @@ public class IndexingServiceTest {
 //		u7 = userRepository.save(u7);
 //		u8 = userRepository.save(u8);
 //
-//		indexingService = new IndexingService(objectRepository, objAttrRepository, userRepository, userAttributeRepository, accessRightRepository);
+//		indexingService = new IndexingService(objectRepository, objAttrRepository, userRepository, userAttributeRepository);
 //
 ////		Iterable<User> userItr = userRepository.findAll();
 ////		User user1 = userItr.iterator().next();

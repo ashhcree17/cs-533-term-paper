@@ -31,17 +31,11 @@ public class UserRepositoryTest {
     @Autowired
     private UserAttributeRepository userAttributeRepository;
 
-    @Autowired
-    private AccessRightRepository accessRightRepository;
-
-//    @Autowired
-//    private PermissionRepository permissionRepository;
-
     @Before
     public void setUp() {
         // set up nodes
         ObjectAttribute pulse = new ObjectAttribute("type:pulse");
-        Permission read = new Permission();
+        Permission read = new Permission("read");
         UserAttribute researcher = new UserAttribute("role:researcher");
         ObjectNode o1 = new ObjectNode();
         User u1 = new User();
@@ -62,7 +56,6 @@ public class UserRepositoryTest {
 
         objAttrRepository.save(pulse);
         objectRepository.save(o1);
-//        permissionRepository.save(read);
         userAttributeRepository.save(researcher);
         userRepository.save(u1);
     }

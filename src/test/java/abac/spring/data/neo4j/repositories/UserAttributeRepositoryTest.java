@@ -30,17 +30,11 @@ public class UserAttributeRepositoryTest {
     @Autowired
     private UserAttributeRepository userAttributeRepository;
 
-    @Autowired
-    private AccessRightRepository accessRightRepository;
-
-//    @Autowired
-//    private PermissionRepository permissionRepository;
-
     @Before
     public void setUp() {
         // set up nodes
         ObjectAttribute pulse = new ObjectAttribute("type:pulse");
-        Permission read = new Permission();
+        Permission read = new Permission("read");
         UserAttribute researcher = new UserAttribute("role:researcher");
         ObjectNode o1 = new ObjectNode();
         User u1 = new User();
@@ -61,7 +55,6 @@ public class UserAttributeRepositoryTest {
 
         objAttrRepository.save(pulse);
         objectRepository.save(o1);
-//        permissionRepository.save(read);
         userAttributeRepository.save(researcher);
         userRepository.save(u1);
     }
@@ -71,7 +64,8 @@ public class UserAttributeRepositoryTest {
         UserAttribute result = userAttributeRepository.findByType("role:researcher");
         assertNotNull(result);
         assertEquals("role:researcher", result.getType());
-        assertEquals("read", result.getPermissions().get(0).getType());
+        assertEquals("type:pulse", result.getPermissions().get(0).getType());
+        assertEquals("read", result.getPermissions().get(0).getPermissions().get(0).getType());
     }
 
     @Test
@@ -80,7 +74,8 @@ public class UserAttributeRepositoryTest {
         assertEquals(1, resultList.size());
         UserAttribute result = resultList.iterator().next();
         assertEquals("role:researcher", result.getType());
-        assertEquals("read", result.getPermissions().get(0).getType());
+        assertEquals("type:pulse", result.getPermissions().get(0).getType());
+        assertEquals("read", result.getPermissions().get(0).getPermissions().get(0).getType());
     }
 
     @Test

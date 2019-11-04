@@ -23,22 +23,14 @@ public class IndexingService {
 	@Autowired
 	UserAttributeRepository userAttributeRepository;
 
-	@Autowired
-	AccessRightRepository accessRightRepository;
-
-//	@Autowired
-//	PermissionRepository permissionRepository;
-
 	public IndexingService(ObjectRepository objectRepository,
 						   ObjectAttributeRepository objAttrRepository,
 						   UserRepository userRepository,
-						   UserAttributeRepository userAttributeRepository,
-						   AccessRightRepository accessRightRepository) {
+						   UserAttributeRepository userAttributeRepository) {
 		this.objectRepository = objectRepository;
 		this.objAttrRepository = objAttrRepository;
 		this.userRepository = userRepository;
 		this.userAttributeRepository = userAttributeRepository;
-		this.accessRightRepository = accessRightRepository;
 	}
 
 	public IndexingService() {}
@@ -46,7 +38,6 @@ public class IndexingService {
 	void DFS(SourceNode v) {
 		System.out.println("start of DFS");
 
-//		List<SourceNode> sourceNodes = userRepository.dfs();
 		List<SourceNode> sourceNodes = objectRepository.dfs();
 		sourceNodes.removeIf(n -> n.getId().equals(v.getId()));
 		v.setNodes(sourceNodes);

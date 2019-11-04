@@ -21,11 +21,9 @@ public class UserAttributeTest {
         assertNull(userAttribute.getPermissions());
 
         ObjectAttribute objectAttribute = new ObjectAttribute("type:pulse");
-
-        Permission accessRight = new Permission();
         userAttribute.addPermission(objectAttribute);
 
-        assertEquals(singletonList(accessRight), userAttribute.getPermissions());
+        assertEquals(singletonList(objectAttribute), userAttribute.getPermissions());
     }
 
     @Test
