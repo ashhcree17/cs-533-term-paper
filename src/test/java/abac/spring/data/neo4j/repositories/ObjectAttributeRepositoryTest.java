@@ -44,7 +44,7 @@ public class ObjectAttributeRepositoryTest {
         u1.addUserAttribute(researcher);
 
         researcher.addUser(u1);
-        researcher.addPermission(pulse);
+        researcher.addPermission(read);
 
         read.setUserAttribute(researcher);
         read.setObjectAttribute(pulse);

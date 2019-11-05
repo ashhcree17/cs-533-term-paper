@@ -20,10 +20,10 @@ public class UserAttributeTest {
         UserAttribute userAttribute = new UserAttribute("role:researcher");
         assertNull(userAttribute.getPermissions());
 
-        ObjectAttribute objectAttribute = new ObjectAttribute("type:pulse");
-        userAttribute.addPermission(objectAttribute);
+        Permission permission = new Permission("read");
+        userAttribute.addPermission(permission);
 
-        assertEquals(singletonList(objectAttribute), userAttribute.getPermissions());
+        assertEquals(singletonList(permission), userAttribute.getPermissions());
     }
 
     @Test

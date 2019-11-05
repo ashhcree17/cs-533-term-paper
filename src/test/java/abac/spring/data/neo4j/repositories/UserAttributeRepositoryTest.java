@@ -45,7 +45,7 @@ public class UserAttributeRepositoryTest {
         u1.addUserAttribute(researcher);
 
         researcher.addUser(u1);
-        researcher.addPermission(pulse);
+        researcher.addPermission(read);
 
         read.setUserAttribute(researcher);
         read.setObjectAttribute(pulse);
@@ -65,7 +65,7 @@ public class UserAttributeRepositoryTest {
         assertNotNull(result);
         assertEquals("role:researcher", result.getType());
         assertEquals("type:pulse", result.getPermissions().get(0).getType());
-        assertEquals("read", result.getPermissions().get(0).getPermissions().get(0).getType());
+        assertEquals("read", result.getPermissions().get(0).getType());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class UserAttributeRepositoryTest {
         UserAttribute result = resultList.iterator().next();
         assertEquals("role:researcher", result.getType());
         assertEquals("type:pulse", result.getPermissions().get(0).getType());
-        assertEquals("read", result.getPermissions().get(0).getPermissions().get(0).getType());
+        assertEquals("read", result.getPermissions().get(0).getType());
     }
 
     @Test

@@ -21,7 +21,7 @@ public class UserAttribute implements SourceNode {
 	private List<User> users;
 
 	@Relationship(type = "ASSOC")
-	private List<ObjectAttribute> permissions;
+	private List<Permission> permissions;
 
 //	@Relationship(direction = Relationship.UNDIRECTED)
 	private List<SourceNode> sourceNodes;
@@ -44,7 +44,7 @@ public class UserAttribute implements SourceNode {
 		return users;
 	}
 
-	public List<ObjectAttribute> getPermissions() {
+	public List<Permission> getPermissions() {
 		return permissions;
 	}
 
@@ -55,7 +55,7 @@ public class UserAttribute implements SourceNode {
 		this.users.add(user);
 	}
 
-	public void addPermission(ObjectAttribute permission) {
+	public void addPermission(Permission permission) {
 		if (this.permissions == null) {
 			this.permissions = new ArrayList<>();
 		}
