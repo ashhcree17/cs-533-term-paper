@@ -1,6 +1,8 @@
 package abac.spring.data.neo4j.services;
 
-import abac.spring.data.neo4j.domain.*;
+import abac.spring.data.neo4j.domain.ObjectNode;
+import abac.spring.data.neo4j.domain.SourceNode;
+import abac.spring.data.neo4j.domain.User;
 import abac.spring.data.neo4j.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,7 +93,8 @@ public class IndexingService {
 					// for all nodeJ that belong to o.nodes do
 					for (SourceNode nodeJ : objectNode.getNodes()) {
 						// if nodeI = nodeJ
-						if (nodeI.equals(nodeJ)) {
+						if (nodeI.getSourceNodeType().equals(nodeJ.getSourceNodeType()) &&
+							nodeI.getId().equals(nodeJ.getId())) {
 							// nodeI is an op node
 							// set u.permissions equal to union of u.permissions and <nodeI, o>
 							user.setPermissions(user.getPermissions());

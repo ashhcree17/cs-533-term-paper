@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -77,23 +79,6 @@ public class IndexingServiceTest {
 	}
 
 	@Test
-	public void testIndexPermissions() {
-		Iterable<User> userItr = userRepository.findAll();
-		User user1 = userItr.iterator().next();
-
-		Iterable<ObjectNode> objItr = objectRepository.findAll();
-		ObjectNode obj1 = objItr.iterator().next();
-
-		assertNull(obj1.getPermissions());
-		assertNull(user1.getPermissions());
-
-		indexingService.index(singletonList(user1), singletonList(obj1));
-
-		assertNotNull(obj1.getPermissions());
-		assertNotNull(user1.getPermissions());
-	}
-
-	@Test
 	public void testIndexSourceNodes() {
 		Iterable<User> userItr = userRepository.findAll();
 		User user1 = userItr.iterator().next();
@@ -124,5 +109,47 @@ public class IndexingServiceTest {
 		assertEquals(o1.getId(), userNodeList.get(1).getId());
 		assertEquals(pulse.getId(), userNodeList.get(2).getId());
 		assertEquals(read.getId(), userNodeList.get(3).getId());
+	}
+
+	/*
+	 * Unit test to fulfill following specifications:
+	 *
+	 * Input: A simple Neo4j policy graph (you can use your own) + any given user node on the graph.
+	 * Output: The 'permissions' hash-map at the user node, after indexing has been completed on the graph
+	 *
+	 */
+	@Test
+	public void testIndexPermissions() {
+		// Find the current user and object saved in the graph
+		Iterable<User> userItr = userRepository.findAll();
+		User user1 = userItr.iterator().next();
+		Iterable<ObjectNode> objItr = objectRepository.findAll();
+		ObjectNode obj1 = objItr.iterator().next();
+
+		assertNull(user1.getPermissions());
+
+		indexingService.index(singletonList(user1), singletonList(obj1));
+
+		assertNotNull(user1.getPermissions());
+
+		Iterator<SourceNode> usr1PermissionsSourceNodes = user1.getPermissions().keySet().iterator();
+		Iterator<ObjectNode> usr1PermissionsObjectNodes = user1.getPermissions().values().iterator();
+
+		// Verify that the User permission hash map contains the following as its "nodeI" keyset
+		List<String> possibleUsrSourceNodeTypes = new ArrayList<>(asList("ObjectAttribute", "UserAttribute", "AccessRight"));
+		SourceNode permissionSrcNode1 = usr1PermissionsSourceNodes.next();
+		assertTrue(possibleUsrSourceNodeTypes.contains(permissionSrcNode1.getSourceNodeType()));
+		SourceNode permissionSrcNode2 = usr1PermissionsSourceNodes.next();
+		assertTrue(possibleUsrSourceNodeTypes.contains(permissionSrcNode2.getSourceNodeType()));
+		SourceNode permissionSrcNode3 = usr1PermissionsSourceNodes.next();
+		assertTrue(possibleUsrSourceNodeTypes.contains(permissionSrcNode3.getSourceNodeType()));
+
+		// Verify that the User permission hash map only contains itself as the value
+		ObjectNode permissionObjNode1 = usr1PermissionsObjectNodes.next();
+		assertEquals(new Long(1), permissionObjNode1.getId());
+		ObjectNode permissionObjNode2 = usr1PermissionsObjectNodes.next();
+		assertEquals(new Long(1), permissionObjNode2.getId());
+		ObjectNode permissionObjNode3 = usr1PermissionsObjectNodes.next();
+		assertEquals(new Long(1), permissionObjNode3.getId());
 	}
 }
